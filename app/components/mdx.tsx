@@ -1,14 +1,32 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import { Mermaid } from "./mermaid";
+import Image from "next/image";
 
 function clsx(...args: any) {
 	return args.filter(Boolean).join(" ");
 }
+
+// --- HELPER: Recursive Text Extraction ---
+// This ensures we get the raw string even if the content is wrapped in spans/divs/objects
+const extractText = (node: any): string => {
+    if (!node) return "";
+    if (typeof node === "string") return node;
+    if (typeof node === "number") return String(node);
+    
+    if (Array.isArray(node)) {
+        return node.map(extractText).join("");
+    }
+    
+    if (node.props && node.props.children) {
+        return extractText(node.props.children);
+    }
+    
+    return "";
+};
 
 const components = {
 	h1: ({ className, ...props }: any) => (
@@ -67,20 +85,28 @@ const components = {
 	td: ({ className, ...props }: any) => (
 		<td className={clsx("border border-zinc-200 dark:border-zinc-700 px-4 py-2 text-left text-zinc-700 dark:text-zinc-300 [&[align=center]]:text-center [&[align=right]]:text-right", className)} {...props} />
 	),
-    
-    // FIX: Simplified Pre handler
-	pre: ({ className, children, ...props }: any) => {
-        // Since we disabled highlighting for mermaid, it will come through as a simple code block
-        // We check the children (code element) for the class
-        const codeElement = React.Children.toArray(children)[0] as any;
-        const isMermaid = codeElement?.props?.className?.includes("language-mermaid");
 
-        if (isMermaid) {
-            // Extract the raw text from the code element
-            const rawCode = codeElement.props.children;
-            return <Mermaid chart={typeof rawCode === 'string' ? rawCode : ''} />;
+    // --- FIXED PRE HANDLER ---
+	pre: ({ className, children, ...props }: any) => {
+        // 1. Check 'data-language' on the <pre> itself
+        const hasPreData = props["data-language"] === "mermaid";
+        
+        // 2. Check if any child (specifically the <code> tag) has the class
+        const childArray = React.Children.toArray(children);
+        const codeElement = childArray[0] as any;
+        const hasCodeClass = codeElement?.props?.className?.includes("language-mermaid") || 
+                             codeElement?.props?.className?.includes("mermaid");
+
+        if (hasPreData || hasCodeClass) {
+            // Extract text using the recursive helper
+            const rawCode = extractText(children);
+            
+            if (rawCode) {
+                return <Mermaid chart={rawCode.trim()} />;
+            }
         }
 
+        // Standard code block render
 		return (
             <pre
                 className={clsx(
