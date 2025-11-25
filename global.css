@@ -4,7 +4,46 @@
 
 @layer base {
   .text-edge-outline {
+    /* Default (Light Mode): Dark Stroke */
+    -webkit-text-stroke: 1px rgba(0,0,0,0.3);
+  }
+  
+  .dark .text-edge-outline {
+    /* Dark Mode: White Stroke */
     -webkit-text-stroke: 1px rgba(255,255,255,0.3);
   }
-} 
+}
 
+/* View Transition Animation for Theme Toggle */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2147483646;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+@keyframes tilt {
+  0%, 50%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(0.5deg);
+  }
+  75% {
+    transform: rotate(-0.5deg);
+  }
+}
+
+.animate-tilt {
+  animation: tilt 10s infinite linear;
+}

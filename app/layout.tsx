@@ -1,24 +1,26 @@
 import "../global.css";
-import { Inter } from "@next/font/google";
-import LocalFont from "@next/font/local";
+import { Inter } from "next/font/google"; 
+import LocalFont from "next/font/local";
+import { ThemeProvider } from "./components/theme-provider"; 
 import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
+import { LanguageProvider } from "./components/language-provider";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://mkboz.com'),
   title: {
-    default: "chronark.com",
-    template: "%s | chronark.com",
+    default: "mkboz.com",
+    template: "%s | mkboz.com",
   },
-  description: "Co-founder of unkey.dev and founder of planetfall.io",
+  description: "Portfolio of Mehmet Boz - Developer",
   openGraph: {
-    title: "chronark.com",
-    description:
-      "Co-founder of unkey.dev and founder of planetfall.io",
-    url: "https://chronark.com",
-    siteName: "chronark.com",
+    title: "mkboz.com",
+    description: "Portfolio of Mehmet Boz - Developer",
+    url: "https://mkboz.com",
+    siteName: "mkboz.com",
     images: [
       {
-        url: "https://chronark.com/og.png",
+        url: "https://mkboz.com/og.png",
         width: 1920,
         height: 1080,
       },
@@ -38,7 +40,7 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: "Chronark",
+    title: "Mehmet Boz",
     card: "summary_large_image",
   },
   icons: {
@@ -65,11 +67,12 @@ export default function RootLayout({
       <head>
         <Analytics />
       </head>
-      <body
-        className={`bg-black ${process.env.NODE_ENV === "development" ? "debug-screens" : undefined
-          }`}
-      >
-        {children}
+      <body className="bg-zinc-50 dark:bg-black transition-colors duration-300">
+        <ThemeProvider>
+          <LanguageProvider>
+            {children}
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
