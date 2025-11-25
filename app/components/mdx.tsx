@@ -70,14 +70,15 @@ const components = {
     
     // FIX: Simplified Pre handler
 	pre: ({ className, children, ...props }: any) => {
-        // Detect Mermaid
-        const isMermaid = 
-            props["data-language"] === "mermaid" || 
-            React.Children.toArray(children).some((child: any) => child.props?.className?.includes("language-mermaid"));
+        // Since we disabled highlighting for mermaid, it will come through as a simple code block
+        // We check the children (code element) for the class
+        const codeElement = React.Children.toArray(children)[0] as any;
+        const isMermaid = codeElement?.props?.className?.includes("language-mermaid");
 
         if (isMermaid) {
-            // Just pass the children to the component
-            return <Mermaid>{children}</Mermaid>;
+            // Extract the raw text from the code element
+            const rawCode = codeElement.props.children;
+            return <Mermaid chart={typeof rawCode === 'string' ? rawCode : ''} />;
         }
 
 		return (

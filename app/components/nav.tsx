@@ -4,7 +4,7 @@ import { ArrowLeft, Menu, X } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { useLanguage } from "./language-provider";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion"; // Added 'Variants' type
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -46,34 +46,72 @@ export const Navigation: React.FC = () => {
 
   // --- SMART BACK LOGIC ---
   const getBackPath = () => {
-    // If we are on a Project Detail page (e.g., /projects/ai-agent)
-    // We want to go back to the Projects List, not Home.
     if (pathname?.startsWith("/projects/") && pathname !== "/projects") {
         return "/projects";
     }
-    
-    // Default: Go Home
     return "/";
   };
 
   const backPath = getBackPath();
 
-  // --- ANIMATIONS ---
-  const menuVariants = {
+  // --- ANIMATIONS (Fixed Types) ---
+  
+  // FIX: Added ': Variants' type annotation
+  const menuVariants: Variants = {
     initial: { y: "-100%", opacity: 0 },
-    animate: { y: "0%", opacity: 1, transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] } },
-    exit: { y: "-100%", opacity: 0, transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] } },
+    animate: { 
+        y: "0%", 
+        opacity: 1, 
+        transition: { 
+            duration: 0.5, 
+            // FIX: Added 'as const' to satisfy Tuple type requirement
+            ease: [0.76, 0, 0.24, 1] as const 
+        } 
+    },
+    exit: { 
+        y: "-100%", 
+        opacity: 0, 
+        transition: { 
+            duration: 0.5, 
+            // FIX: Added 'as const'
+            ease: [0.76, 0, 0.24, 1] as const 
+        } 
+    },
   };
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     initial: { transition: { staggerChildren: 0.09, staggerDirection: -1 } },
     animate: { transition: { delayChildren: 0.3, staggerChildren: 0.09, staggerDirection: 1 } },
   };
 
-  const linkVariants = {
-    initial: { y: 30, opacity: 0, transition: { duration: 0.5, ease: [0.37, 0, 0.63, 1] } },
-    animate: { y: 0, opacity: 1, transition: { duration: 0.7, ease: [0, 0.55, 0.45, 1] } },
-    exit: { y: 30, opacity: 0, transition: { duration: 0.4, ease: [0.37, 0, 0.63, 1] } },
+  const linkVariants: Variants = {
+    initial: { 
+        y: 30, 
+        opacity: 0, 
+        transition: { 
+            duration: 0.5, 
+            // FIX: Added 'as const'
+            ease: [0.37, 0, 0.63, 1] as const 
+        } 
+    },
+    animate: { 
+        y: 0, 
+        opacity: 1, 
+        transition: { 
+            duration: 0.7, 
+            // FIX: Added 'as const'
+            ease: [0, 0.55, 0.45, 1] as const 
+        } 
+    },
+    exit: { 
+        y: 30, 
+        opacity: 0, 
+        transition: { 
+            duration: 0.4, 
+            // FIX: Added 'as const'
+            ease: [0.37, 0, 0.63, 1] as const 
+        } 
+    },
   };
 
   return (
@@ -90,7 +128,6 @@ export const Navigation: React.FC = () => {
           <div className="flex items-center gap-4 z-50">
              <ThemeToggle />
              
-             {/* Conditional Back Button */}
              {pathname !== "/" && (
                 <Link 
                     href={backPath} 

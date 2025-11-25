@@ -22,36 +22,21 @@ export const Project = defineDocumentType(() => ({
 	contentType: "mdx",
 
 	fields: {
-		published: {
-			type: "boolean",
-		},
-		title: {
-			type: "string",
-			required: true,
-		},
-		description: {
-			type: "string",
-			required: true,
-		},
-		date: {
-			type: "date",
-		},
-		url: {
-			type: "string",
-		},
-		repository: {
-			type: "string",
-		},
-        // --- FIXED DEFINITIONS ---
+		published: { type: "boolean" },
+		title: { type: "string", required: true },
+		description: { type: "string", required: true },
+		date: { type: "date" },
+		url: { type: "string" },
+		repository: { type: "string" },
 		tags: {
 			type: "list",
 			of: { type: "string" },
-            required: false, // Important: Old projects don't have tags
+            required: false, 
 		},
 		locale: {
-			type: "string",
+			type: "string", 
+            default: "en",
             required: false,
-            default: "en" // Important: Default old projects to English
 		},
 	},
 	computedFields,
@@ -62,13 +47,8 @@ export const Page = defineDocumentType(() => ({
 	filePathPattern: "pages/**/*.mdx",
 	contentType: "mdx",
 	fields: {
-		title: {
-			type: "string",
-			required: true,
-		},
-		description: {
-			type: "string",
-		},
+		title: { type: "string", required: true },
+		description: { type: "string" },
 	},
 	computedFields,
 }));
@@ -84,6 +64,13 @@ export default makeSource({
 				rehypePrettyCode,
 				{
 					theme: "github-dark",
+                    // --- FIX: Do not process mermaid blocks ---
+                    filter: (node) => {
+                        // Check if the node is a code block with language-mermaid
+                        const isMermaid = node.children?.[0]?.properties?.className?.includes("language-mermaid");
+                        return !isMermaid;
+                    },
+                    // ------------------------------------------
 					onVisitLine(node) {
 						if (node.children.length === 0) {
 							node.children = [{ type: "text", value: " " }];
