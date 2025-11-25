@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>mkbo.dev</h1>
+    <h1>mkboz.com</h1>
     <p>My personal portfolio website built with Next.js, Tailwind CSS, and Contentlayer.</p>
 </div>
 
