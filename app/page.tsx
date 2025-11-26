@@ -183,7 +183,7 @@ export default function Home() {
           </div>
 
           {/* 2. MAIN CONTENT HUBS (About + 3 Cards) - MOVED UP */}
-          <div className="w-full max-w-6xl px-6 pb-20 space-y-12">
+          <div className="w-full max-w-6xl px-6 pb-16 space-y-12">
               
               {/* ABOUT ME Card */}
               <div className="p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/20 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow">
@@ -258,6 +258,17 @@ export default function Home() {
                         {t("read_more")} <ArrowRight size={14} />
                      </Link>
                   </div>
+              </div>
+
+              {/* --- NEW PROJECTS BUTTON (Outside of grid) --- */}
+              <div className="flex justify-center pt-8">
+                  <Link 
+                    href="/projects" 
+                    className="group relative inline-flex items-center gap-3 px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-full font-bold text-lg transition-transform hover:scale-105 shadow-lg"
+                  >
+                      <span>{language === 'en' ? "See Projects" : "Projecten Bekijken"}</span>
+                      <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                  </Link>
               </div>
           </div>
 
