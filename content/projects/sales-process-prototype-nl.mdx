@@ -1,0 +1,21 @@
+---
+title: "Verkoopproces nagebouwd als state machine, met AI-hulp"
+description: "Een werkend prototype om te testen waar AI een verhuurproces kan versnellen, zonder het live CRM aan te raken."
+date: "2026-01-15"
+published: true
+tags: ["React","TypeScript","State machines","LLM APIs"]
+locale: "nl"
+category: "ai"
+---
+
+## Het probleem
+
+Het verhuurproces loopt van lead naar bezichtiging, voorstel, overeenkomst en facturatie, in een CRM-workflow zonder AI. De vraag was waar de wachttijd zit en welke stappen AI kan versnellen.
+
+## De aanpak
+
+Ik heb de workflow één op één nagebouwd als state machine in React en TypeScript, inclusief verplichte velden en rollen. Elke fase kreeg een AI-assistlaag. De regel: de AI stelt voor, de state machine beslist. De AI vult velden in of schrijft een conceptmail, een mens keurt goed.
+
+## Het resultaat
+
+Een interactief prototype om AI-toepassingen veilig te testen naast het live CRM.

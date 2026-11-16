@@ -1,15 +1,4 @@
-"use client";
-
-import { motion } from "framer-motion";
-
+// A template remounts on every navigation, so each new page plays the short "page-enter" rise.
 export default function Template({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      initial={{ y: 20, opacity: 0, filter: "blur(5px)" }}
-      animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-      transition={{ ease: "easeInOut", duration: 0.5 }}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className="page-enter">{children}</div>;
 }

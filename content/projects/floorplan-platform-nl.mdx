@@ -1,0 +1,77 @@
+---
+title: "Plattegrondplatform met AI Designer"
+description: "Webapp die architecten-PDF's omzet in bewerkbare plattegronden, met een AI-agent die ruimtes bouwt en inricht op basis van gewone taal."
+date: "2026-09-01"
+published: true
+tags: ["Next.js", "React", "TypeScript", "Vercel AI SDK", "OpenRouter", "Fabric.js", "Cloudflare Workers", "Zoho CRM API", "Vitest", "Playwright"]
+locale: "nl"
+category: "featured"
+status: "Live in productie"
+role: "Enige ontwikkelaar, van idee tot productie"
+---
+
+## Het probleem
+
+Mijn werkgever, een verhuurder van kantoorruimte, heeft meerdere gebouwen. De plattegronden bestonden alleen als PDF van de architect. Elke wijziging in een indeling liep daardoor via een externe partij.
+
+De vierkante meters zijn de basis van de huurprijs. Ze stonden in tekeningen, in spreadsheets en in het CRM, en die drie kwamen niet overeen. Sales had ook geen actueel, visueel overzicht van wat vrij, in optie of verhuurd was.
+
+## De aanpak
+
+Ik heb het platform alleen gebouwd, van het eerste idee tot productie. Het werkt in zes stappen.
+
+### De PDF importeren
+
+De PDF wordt in de browser een vectortekening, met WebAssembly. Je kalibreert één keer de schaal. Daarna vindt de app zelf de muren en ruimtes. Dat doe ik met klassieke geometrie en zonder AI: een afstandstransformatie gevolgd door watershed, een techniek die de tekening als het ware met water vult en stopt bij smalle punten. Een deuropening is zo'n smal punt en wordt dus vanzelf een grens tussen twee ruimtes. Ruimtenummers en namen komen uit de tekst in de PDF.
+
+### Tekenen
+
+Je tekent muren, en de ruimtes en hun vierkante meters volgen vanzelf. Een muur door een ruimte splitst die direct in twee. Gebogen muren kunnen ook, als boog en als Bézier-curve, met een exacte oppervlakteberekening.
+
+### AI Designer
+
+Dit is een chatpaneel waarin je typt wat je wilt, bijvoorbeeld een belruimte van 2 bij 3 meter met een werkplek. De agent leest de plattegrond, bouwt met 22 tools, controleert zijn eigen werk en laat het resultaat geanimeerd zien. Daarna kies je Accepteren of Verwerpen. Verwerpen is één undo-stap.
+
+### Inrichten
+
+Er is een meubelbibliotheek en een botsingsengine die ik zelf heb geschreven. De app controleert ook de loopruimte volgens NEN 1824, de Nederlandse norm voor afmetingen van werkplekken.
+
+### CRM-koppeling
+
+Ruimtes en vierkante meters gaan in twee richtingen van en naar Zoho CRM. Er is een oefenomgeving en een live-omgeving. Voor elke sync krijg je eerst een voorbeeld te zien. De koppeling maakt nooit dubbele records aan en verwijdert nooit iets.
+
+### Plattegrondkaart
+
+Dit is een aparte webapp voor sales. Je ziet alle gebouwen en verdiepingen, met elke ruimte gekleurd op beschikbaarheid. De kaart is gebouwd voor gebruik op de telefoon.
+
+## Wat de AI Designer anders maakt
+
+De AI stelt voor en de applicatie voert uit. Elke actie van de agent gaat door dezelfde code als een handeling van een gebruiker, en wordt op dezelfde manier gecontroleerd.
+
+De garanties zitten in code, niet in de prompt. Bestaande meubels zijn beschermd. Niets kan door een muur heen. Een groep meubels verplaatst helemaal of helemaal niet. Als de agent twijfelt, stelt hij eerst een vraag met keuzeknoppen.
+
+De agent ziet de tekening via een geannoteerde afbeelding met een schaakbordraster. Hij redeneert per ruimte in het eigen assenstelsel van die ruimte. Dat is nodig bij gebouwen die schuin staan.
+
+Ik heb de kosten gemeten in plaats van gegokt. Logging per verzoek liet zien dat ongeveer 99% van de kosten in steeds opnieuw meegestuurde context zat. Dat heb ik opgelost met een plattegrondgeheugen dat de plattegrond alleen meestuurt als die is veranderd, door oude leesresultaten te snoeien, met een prompt die gecachet kan worden en door acties te bundelen.
+
+Het platform hangt niet aan één AI-model, omdat alle aanroepen via OpenRouter lopen. AI-vision herkent sanitair binnen een kader dat je trekt. Het antwoord daarvan wordt behandeld als onbetrouwbare invoer en eerst gecontroleerd.
+
+## Het resultaat
+
+Het platform is live in productie. Indelingen worden nu intern gemaakt in plaats van door een externe partij. De vierkante meters komen uit één bron en geven elke keer dezelfde uitkomst. Sales ziet in één oogopslag wat beschikbaar is.
+
+## Kerncijfers
+
+- Ongeveer 7 maanden werk
+- Ongeveer 100.000 regels TypeScript
+- Ongeveer 2.300 geautomatiseerde tests, plus 21 end-to-end-tests met echte touch-gebaren
+- 22 AI-tools met 372 tests
+- Detectie op een gebouw van 9 verdiepingen vond 145 ruimtes en liet 0 losse muren over
+- Vierkante meters zijn deterministisch over 4.284 permutaties, geborgd met een regressietest over 655 echte ruimtes
+- Door de kaart van SVG naar canvas om te zetten ging het stijlwerk per pinch op mobiel van ongeveer 1 seconde naar 0 ms
+
+## Mijn rol
+
+Ik heb alles zelf gedaan: wensen ophalen, ontwerp en architectuur, de bouw van de app, de AI-laag en de koppelingen, en het testen op echte tekeningen. Ik heb ook de demo gegeven en een handleiding van 32 pagina's en een kennisbank geschreven.
+
+Ik heb het gebouwd met Claude Code als pair-programmer. Ik bepaalde de architectuur, schreef de specs en controleerde alles met tests en metingen.

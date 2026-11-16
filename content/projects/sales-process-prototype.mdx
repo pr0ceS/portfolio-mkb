@@ -1,0 +1,21 @@
+---
+title: "Sales process rebuilt as a state machine, with AI assistance"
+description: "A working prototype to test where AI can speed up a rental process, without touching the live CRM."
+date: "2026-01-15"
+published: true
+tags: ["React","TypeScript","State machines","LLM APIs"]
+locale: "en"
+category: "ai"
+---
+
+## The problem
+
+The rental process runs from lead to viewing, proposal, agreement and invoicing, in a CRM workflow without AI. The question was where the waiting time is and which steps AI could speed up.
+
+## The approach
+
+I rebuilt the workflow one to one as a state machine in React and TypeScript, including required fields and roles. Each phase got an AI assist layer. The rule: the AI proposes, the state machine decides. The AI fills in fields or drafts an email, a person approves.
+
+## The result
+
+An interactive prototype to try AI features safely next to the live CRM.

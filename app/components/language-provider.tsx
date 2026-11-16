@@ -1,200 +1,82 @@
 "use client";
-
-import React, { createContext, useContext, useState, useEffect } from "react";
-
-type Language = "en" | "nl";
-
-export type ExperienceItem = {
-  year: string;
-  title: string;
-  company?: string;
-  description: string;
-};
-
-interface LanguageContextType {
-  language: Language;
-  setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
-  skills: string[];
-  softSkills: string[];
-  experience: ExperienceItem[];
-  lookingFor: { title: string; icon: string }[];
-}
-
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { usePathname } from "next/navigation";
+export type Language = "en" | "nl";
+export type ExperienceItem = { year: string; title: string; company?: string; description: string };
+export type Principle = { title: string; text: string };
 const translations = {
   en: {
-    // Navigation
-    nav_about: "About",
-    nav_ecommerce: "E-commerce",
-    nav_programming: "Programming",
-    nav_projects: "Projects",
-    nav_contact: "Contact",
-    
-    // Hero
-    hero_subtitle: "AI & Software Developer with strong experience in e-commerce, customer service and programming.",
-    hero_subtitle_2: "Currently seeking opportunities in Software Development, IT, Sales or Customer Service.",
-    
-    // Section Headers
-    section_looking_for: "Seeking Roles In",
-    section_experience: "Experience",
-    section_skills_soft: "Professional Attributes",
-    section_about: "About Me",
-    
-    // Section Teasers (Main Page)
-    teaser_about_desc: "I combine technical skills with business efficiency. From running e-commerce stores to building AI agents, I focus on solving real problems.",
-    teaser_ecommerce_title: "E-commerce & Customer Service",
-    teaser_ecommerce_desc: "Experience in running a business, automating and speeding up workflows, and optimizing customer support.",
-    teaser_programming_title: "Programming & AI",
-    teaser_programming_desc: "Full-stack development using Next.js, Python, Node.js and AI integration to build autonomous systems.",
-    teaser_projects_title: "Featured Projects",
-    teaser_projects_desc: "A showcase of my technical capabilities, from AI agents to marketing automation engines to blazing fast full-stack e-commerce websites.",
-    
-    // Common
-    read_more: "Read More",
-    cta_contact_me: "Get in Touch",
-    contact_footer_text: "Ready to hire? Let's have a conversation.",
-
-    // Arrays
-    skills: ["TypeScript", "Next.js", "React", "Python", "Node.js", "AI Integration", "PostgreSQL", "Tailwind CSS"],
-    softSkills: ["Resilience", "Proactive Problem-Solving", "Entrepreneurial Mindset", "Rapid Self-Learning", "Pragmatism", "Analytical Thinking", "Discipline"],
-    
-    lookingFor: [
-      { title: "Junior Developer", icon: "⚡" },
-			{ title: "IT", icon: "💻" },
-      { title: "Sales", icon: "🚀" },
-      { title: "Customer Service", icon: "🎧" }
+    nav_about: "About", nav_projects: "Projects", nav_contact: "Contact", nav_programming: "Programming", nav_ecommerce: "E-commerce",
+    section_experience: "Experience", section_principles: "How I work", section_about: "About me",
+    read_more: "Read more", cta_contact_me: "Get in touch",
+    skillGroups: [
+      ["AI", "LLMs, AI agents, LangGraph, LangChain, RAG, vector databases (Qdrant), Vercel AI SDK, OpenRouter, vision"],
+      ["Languages", "Python, TypeScript, JavaScript, Node.js, SQL"],
+      ["Frameworks", "FastAPI, Celery, Next.js, React, Astro, Medusa"],
+      ["Data and infrastructure", "PostgreSQL, Redis, Docker, Cloudflare Workers, Vercel, Fly.io, Vitest, Playwright"],
+      ["Integrations", "REST APIs, OAuth 2.0, webhooks, Zoho, Exact Online, Shopify, Mollie"]
     ],
-
+    principles: [
+      { title: "The AI never has the last word.", text: "Whatever the AI wants to do is checked by the software first, just like a click from a person." },
+      { title: "Important rules can't be broken.", text: "I build them into the software itself, instead of trusting the AI to follow them." },
+      { title: "I measure before I improve.", text: "I keep track of what every AI answer costs and how long it takes, and fix what the numbers point to." },
+      { title: "I test with real work.", text: "Real floor plans and real data, in tests that run automatically." }
+    ],
     experience: [
-      {
-        year: "2024 – Present",
-        title: "AI & Automation Developer",
-        company: "Self-Initiated Projects",
-        description: "Architected and built a suite of autonomous e-commerce tools. Key projects include a hybrid AI Customer Service Agent (Python/LangGraph/RAG) and the MKSL marketing automation engine (Node.js/BullMQ) to fully automate product-to-ad pipelines."
-      },
-      {
-        year: "2022 – Present",
-        title: "Founder & Full Stack Developer",
-        company: "MKB Trading",
-        description: "Launched and scaled an e-commerce business, managing all operations. Built multiple full-stack stores with Astro.js & React and created Shopify Themes. Handled high-volume, international customer support and executed data-driven marketing campaigns on Facebook, Google Ads & Pinterest."
-      },
-      {
-        year: "2020 – 2022",
-        title: "Independent Developer",
-        company: "Hobby & Exploration",
-        description: "Started my programming journey with HTML, CSS, Linux, PHP and Ethical Hacking. Developed foundational skills by building various websites and custom scripts, focusing on learning and building projects."
-      }
+      { year: "Feb 2026 – Present", title: "Software Developer", company: "MyOffice (MyGroup), part-time, sole developer", description: "Built a floor plan platform from idea to production. It turns architect PDFs into editable drawings with exact square metres, linked to the CRM, and has its own AI agent that builds and furnishes rooms. Also built an online booking tool for meeting rooms, repaired the data of more than 1,100 rooms and connected the CRM to accounting and external partners." },
+      { year: "2022 – Present", title: "Founder & Lead Developer", company: "MKB Trading", description: "Designed and built Aiders, an AI agent that handles customer service emails for Shopify stores, live in the Shopify App Store. Built and scaled international webshops in Denmark, Germany and the UK, and my own tool to automate Meta ads." },
+      { year: "2020 – 2022", title: "Freelance Developer", description: "Moved legacy PHP to Python and Node.js, and managed Linux servers." }
     ]
   },
   nl: {
-    // Navigation
-    nav_about: "Over Mij",
-    nav_ecommerce: "E-commerce",
-    nav_programming: "Programmeren",
-    nav_projects: "Projecten",
-    nav_contact: "Contact",
-
-    // Hero
-    hero_subtitle: "AI & Software Developer met sterke ervaring in e-commerce, klantenservice en programmeren.",
-    hero_subtitle_2: "Momenteel op zoek naar kansen in Software Development, IT, Sales of Klantenservice.",
-
-    // Section Headers
-    section_looking_for: "Op zoek naar rollen in",
-    section_experience: "Ervaring",
-    section_skills_soft: "Professionele Eigenschappen",
-    section_about: "Over Mij",
-
-    // Section Teasers (Main Page)
-    teaser_about_desc: "Ik combineer technische vaardigheden met zakelijke efficiëntie. Van het runnen van webshops tot het bouwen van AI-agents, ik focus op het oplossen van echte problemen.",
-    teaser_ecommerce_title: "E-commerce & Klantenservice",
-    teaser_ecommerce_desc: "Ervaring met het runnen van een bedrijf, het automatiseren en versnellen van workflows, en het optimaliseren van klantenservice.",
-    teaser_programming_title: "Programmeren & AI",
-    teaser_programming_desc: "Full-stack ontwikkeling met Next.js, Python, Node.js en AI-integratie om autonome systemen te bouwen.",
-    teaser_projects_title: "Uitgelichte Projecten",
-    teaser_projects_desc: "Een overzicht van mijn technische capaciteiten, van AI-agents en marketing-automatiseringstools tot razendsnelle full-stack e-commerce websites.",
-
-    // Common
-    read_more: "Lees Meer",
-    cta_contact_me: "Neem Contact Op",
-    contact_footer_text: "Klaar om samen te werken? Laten we praten.",
-
-    // Arrays
-    skills: ["TypeScript", "Next.js", "React", "Python", "Node.js", "AI Integratie", "PostgreSQL", "Tailwind CSS"],
-    softSkills: ["Veerkracht", "Proactief Probleemoplossen", "Ondernemersmentaliteit", "Snel Zelflerend", "Pragmatisme", "Analytisch Denkvermogen", "Discipline"],
-
-    lookingFor: [
-      { title: "Junior Developer", icon: "⚡" },
-      { title: "IT", icon: "💻" },
-      { title: "Sales", icon: "🚀" },
-      { title: "Klantenservice", icon: "🎧" }
+    nav_about: "Over mij", nav_projects: "Projecten", nav_contact: "Contact", nav_programming: "Programmeren", nav_ecommerce: "E-commerce",
+    section_experience: "Ervaring", section_principles: "Hoe ik werk", section_about: "Over mij",
+    read_more: "Lees meer", cta_contact_me: "Neem contact op",
+    skillGroups: [
+      ["AI", "LLM's, AI-agents, LangGraph, LangChain, RAG, vector databases (Qdrant), Vercel AI SDK, OpenRouter, vision"],
+      ["Programmeertalen", "Python, TypeScript, JavaScript, Node.js, SQL"],
+      ["Frameworks", "FastAPI, Celery, Next.js, React, Astro, Medusa"],
+      ["Data en infrastructuur", "PostgreSQL, Redis, Docker, Cloudflare Workers, Vercel, Fly.io, Vitest, Playwright"],
+      ["Integraties", "REST API's, OAuth 2.0, webhooks, Zoho, Exact Online, Shopify, Mollie"]
     ],
-
+    principles: [
+      { title: "De AI heeft nooit het laatste woord.", text: "Alles wat de AI wil doen, controleert de software eerst, net als bij een klik van een mens." },
+      { title: "Belangrijke regels zijn niet te omzeilen.", text: "Ik bouw ze in de software zelf, in plaats van erop te vertrouwen dat de AI zich eraan houdt." },
+      { title: "Eerst meten, dan verbeteren.", text: "Ik houd bij wat elk AI-antwoord kost en hoe lang het duurt, en pak aan wat de cijfers laten zien." },
+      { title: "Testen met echt werk.", text: "Echte plattegronden en echte gegevens, in tests die automatisch draaien." }
+    ],
     experience: [
-      {
-        year: "2024 – Heden",
-        title: "AI & Automation Developer",
-        company: "Eigen Initiatief Projecten",
-        description: "Ontwierp en bouwde een suite van autonome e-commerce tools. Kernprojecten omvatten een hybride AI Klantenservice Agent (Python/LangGraph/RAG) en de MKSL marketing automation engine (Node.js/BullMQ) om product-naar-advertentie pipelines volledig te automatiseren."
-      },
-      {
-        year: "2022 – Heden",
-        title: "Oprichter & Full Stack Developer",
-        company: "MKB Trading",
-        description: "Een e-commerce bedrijf gelanceerd en opgeschaald, waarbij ik alle operaties beheerde. Meerdere full-stack webwinkels gebouwd met Astro.js & React en Shopify Themes gecreëerd. Hoog-volume, internationale klantenservice afgehandeld en datagedreven marketingcampagnes uitgevoerd op Facebook, Google Ads & Pinterest."
-      },
-      {
-        year: "2020 – 2022",
-        title: "Onafhankelijk Ontwikkelaar",
-        company: "Hobby & Verkenning",
-        description: "Mijn programmeerreis begonnen met HTML, CSS, Linux, PHP en Ethical Hacking. Fundamentele vaardigheden ontwikkeld door diverse websites en custom scripts te bouwen, met een focus op leren en projecten bouwen."
-      }
+      { year: "Feb 2026 – Heden", title: "Software Developer", company: "MyOffice (MyGroup), parttime, enige developer", description: "Van idee tot productie een plattegrondplatform gebouwd. Het zet architecten-PDF's om in bewerkbare tekeningen met exacte vierkante meters, gekoppeld aan het CRM, en heeft een eigen AI-agent die ruimtes bouwt en inricht. Daarnaast een online boekingstool voor vergaderruimtes gebouwd, de data van ruim 1.100 ruimtes hersteld en het CRM gekoppeld aan de boekhouding en externe partners." },
+      { year: "2022 – Heden", title: "Oprichter & Lead Developer", company: "MKB Trading", description: "Aiders ontworpen en gebouwd, een AI-agent die klantenservice-e-mails voor Shopify-webshops afhandelt, live in de Shopify App Store. Internationale webshops gebouwd en opgeschaald in Denemarken, Duitsland en het VK, en een eigen tool om Meta-advertenties te automatiseren." },
+      { year: "2020 – 2022", title: "Freelance Developer", description: "Legacy PHP omgezet naar Python en Node.js, en Linux-servers beheerd." }
     ]
-  },
+  }
 };
-
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
-
+type Context = { language: Language; setLanguage: (lang: Language) => void; t: (key: string) => string; skillGroups: string[][]; principles: Principle[]; experience: ExperienceItem[] };
+const LanguageContext = createContext<Context | undefined>(undefined);
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState<Language>("en");
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const systemLang = navigator.language.split("-")[0];
-      if (systemLang === "nl") {
-        setLanguage("nl");
-      }
-    }
+  const [language, updateLanguage] = useState<Language>("en");
+  const pathname = usePathname() ?? "/";
+  const setLanguage = useCallback((lang: Language) => {
+    updateLanguage(lang);
+    document.documentElement.lang = lang;
+    try { localStorage.setItem("portfolio-language", lang); } catch {}
   }, []);
-
-  const t = (key: string) => {
-    // @ts-ignore
-    return translations[language][key] || key;
-  };
-
-  const currentSkills = translations[language].skills;
-  const currentSoftSkills = translations[language].softSkills;
-  const currentExperience = translations[language].experience;
-  const currentLookingFor = translations[language].lookingFor;
-
-  return (
-    <LanguageContext.Provider value={{ 
-      language, 
-      setLanguage, 
-      t, 
-      skills: currentSkills, 
-      softSkills: currentSoftSkills,
-      experience: currentExperience,
-      lookingFor: currentLookingFor
-    }}>
-      {children}
-    </LanguageContext.Provider>
-  );
+  useEffect(() => {
+    let stored: string | null = null;
+    try { stored = localStorage.getItem("portfolio-language"); } catch {}
+    const lang = stored === "nl" || stored === "en" ? stored : navigator.language.startsWith("nl") ? "nl" : "en";
+    setLanguage(lang);
+  }, [setLanguage]);
+  useEffect(() => {
+    if (pathname.startsWith("/projects/")) setLanguage(pathname.endsWith("-nl") ? "nl" : "en");
+  }, [pathname, setLanguage]);
+  const current = translations[language];
+  function t(key: string) { const value = current[key as keyof typeof current]; return typeof value === "string" ? value : key; }
+  return <LanguageContext.Provider value={{ language, setLanguage, t, skillGroups: current.skillGroups, principles: current.principles, experience: current.experience }}>{children}</LanguageContext.Provider>;
 }
-
 export function useLanguage() {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error("useLanguage must be used within a LanguageProvider");
-  }
+  if (!context) throw new Error("useLanguage must be used within a LanguageProvider");
   return context;
 }

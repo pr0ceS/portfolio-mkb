@@ -1,0 +1,39 @@
+---
+title: "Meeting room booking tool"
+description: "Online tool where customers book a meeting room themselves, with live availability and the price including VAT."
+date: "2026-07-01"
+published: true
+tags: ["JavaScript", "Tailwind CSS", "MapLibre GL", "Cloudflare Pages Functions", "Cloudflare KV", "REST API", "OAuth 2.0", "Zoho Creator", "Zoho Desk", "Deluge"]
+locale: "en"
+category: "featured"
+status: "Live"
+role: "Concept, UX, front end, serverless back end and CRM integration"
+---
+
+## The problem
+
+My employer, a company that rents out office space, also rents out meeting rooms. Booking one went through a long, static form. It showed no availability and no price.
+
+Every request had to be checked, priced and confirmed by hand. Requests were left waiting.
+
+## The approach
+
+I built a booking tool that works like a webshop. The customer goes through it step by step.
+
+First you pick a location on an interactive map. Then a calendar shows how busy each day is and offers only the time slots that are really free. You see the rooms that fit, with photos and seating layouts. You add catering and see the cost build up live, with VAT per rate. Input is checked while you type. A recurring booking can be made in one go.
+
+After booking, the customer gets an automatic email at each step, with the proposal as a PDF. The team can change the email templates themselves. Each customer also gets a personal page behind a secure link, to cancel or to ask for a call back.
+
+For the team there is a back office with an overview per location. Confirming, declining and cancelling each take one click. Bookings marked "price on request" can be priced afterwards. On confirmation a payment request is created in the ticket system automatically.
+
+On the technical side it is a light single-page app in plain JavaScript with Tailwind. The map only loads once it is visible, which saves about three quarters of the page weight on mobile. The browser never talks to the CRM directly. A serverless API on Cloudflare Pages Functions sits in between. If the CRM is slow, a cache in Cloudflare KV serves as a fallback. Prices are calculated in whole cents, the same way in the browser as on the server.
+
+I spent a lot of the work on reliability. The server checks for double bookings. Everything uses one time zone, also around the switch to summer time. The tool falls back sensibly on CRM errors and stays within the API limits. The management links use long random codes and there is rate limiting. Before going live there were automated tests and security reviews.
+
+## The result
+
+Customers book by themselves, at any hour, and see availability and price straight away. Requests arrive complete. Confirming is one click, including the email and the payment request. There are fewer phone calls and emails about changes.
+
+## My role
+
+I did the concept, the UX and the interaction design, and tested several variants. I built the front end, the serverless back end, the link with the CRM and the back office flow.

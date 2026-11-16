@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import mermaid from "mermaid";
 import { useTheme } from "./theme-provider";
 
 interface MermaidProps {
@@ -16,15 +15,16 @@ export const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
   useEffect(() => {
     if (chart && typeof window !== 'undefined') {
       try {
-        mermaid.initialize({
-          startOnLoad: false,
-          theme: theme === "dark" ? "dark" : "default",
-          securityLevel: "loose",
-          fontFamily: "var(--font-inter)",
-        });
-
         const renderChart = async () => {
             try {
+                // The diagram library is large, so it is only downloaded on pages that have a diagram.
+                const mermaid = (await import("mermaid")).default;
+                mermaid.initialize({
+                  startOnLoad: false,
+                  theme: theme === "dark" ? "dark" : "default",
+                  securityLevel: "loose",
+                  fontFamily: "var(--font-inter)",
+                });
                 const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
                 const { svg } = await mermaid.render(id, chart);
                 setSvg(svg);

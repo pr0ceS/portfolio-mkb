@@ -1,0 +1,21 @@
+---
+title: "Lease terminations with a validation widget"
+description: "A widget in the CRM that only accepts valid termination dates."
+date: "2026-07-15"
+published: true
+tags: ["JavaScript","Zoho CRM Widgets SDK","Cloudflare","Deluge"]
+locale: "en"
+category: "automation"
+---
+
+## The problem
+
+For a termination, staff had to work out by hand when a tenant was allowed to leave, with notice periods, renewal periods and running renewals. That often went wrong.
+
+## The approach
+
+Starting a termination became a step in the CRM process, with my own widget hosted on Cloudflare. The rules are in the widget: only per the first of the month, the notice period must be respected, and a renewal that has not started yet may be interrupted. Exceptions need a mandatory reason. I tested it with a wide set of scenarios, including extreme contracts.
+
+## The result
+
+Wrong termination dates can no longer be entered, and every exception is accounted for.

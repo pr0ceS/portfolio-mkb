@@ -48,3 +48,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+# Source videos (the site uses the compressed copies in public/videos)
+/introducing-aiders.final.mp4
+/Indelingstekening.webm
+
+# Private files: this repository is public
+/portfolio-cases.md
+/*.pdf
+/design-lab/

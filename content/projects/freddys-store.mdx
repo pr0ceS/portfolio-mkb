@@ -1,0 +1,32 @@
+---
+title: "Freddy's Store"
+description: "A headless webshop on its own e-commerce stack instead of Shopify, with a self-built Mollie payment integration."
+date: "2026-03-01"
+url: "https://freddys-store.com"
+published: true
+tags: ["Medusa v2", "Astro", "Cloudflare Workers", "Sanity", "Mollie API", "PostgreSQL", "Redis", "Hetzner"]
+locale: "en"
+category: "web"
+status: "Live"
+role: "Built the storefront, the backend setup and the payment integration"
+---
+
+## The problem
+
+Shopify is quick to start with, but you pay for it every month, and again for each app. You also cannot change everything. The checkout in particular is hard to adjust.
+
+The goal here was a webshop on its own stack: faster, cheaper and fully adjustable, including the checkout.
+
+## The approach
+
+The shop is headless. That means the part the customer sees and the part that handles products and orders are separate systems that talk through an API.
+
+The backend is Medusa v2, an open source e-commerce engine. It runs on a Hetzner server that costs about $7 per month. The frontend is built with Astro 5 and rendered on the server. It runs on Cloudflare Workers, so pages are served from a location close to the visitor.
+
+Content is managed in Sanity, a CMS. Search runs on Orama.
+
+Payments go through Mollie, with Apple Pay and iDEAL among the methods. There was no Mollie integration for Medusa that was ready for production, so I built one myself.
+
+## The result
+
+The webshop is live and loads very fast. There is full control over the checkout and the tracking. The hosting costs are a fraction of what Shopify plus apps would cost.

@@ -1,73 +1,20 @@
 "use client";
 import Link from "next/link";
-import React from "react";
-import { Github, Globe } from "lucide-react";
-
-type Props = {
-	project: {
-		url?: string;
-		title: string;
-		description: string;
-		repository?: string;
-	};
-	views: number;
-};
-
-export const Header: React.FC<Props> = ({ project }) => {
-	
-	const links: { label: string; href: string; icon: React.ReactNode }[] = [];
-	if (project.repository) {
-		links.push({
-			label: "GitHub",
-			href: `https://github.com/${project.repository}`,
-            icon: <Github size={20} />
-		});
-	}
-	if (project.url) {
-		links.push({
-			label: "Website",
-			href: project.url,
-            icon: <Globe size={20} />
-		});
-	}
-
-	return (
-		<header
-			className="relative mb-14 isolate overflow-hidden bg-gradient-to-tl from-zinc-50 via-zinc-200/50 to-zinc-50 dark:from-black dark:via-zinc-900 dark:to-black transition-colors duration-500 border-b border-zinc-200 dark:border-zinc-800"
-		>
-            {/* BACKGROUND PARTICLES OR GRID COULD GO HERE */}
-            
-			<div className="container mx-auto relative isolate overflow-hidden pt-48 pb-24 px-6">
-				<div className="mx-auto max-w-4xl text-center flex flex-col items-center">
-					
-                    {/* Title & Desc */}
-                    <div className="mx-auto max-w-3xl lg:mx-0">
-						<h1 className="text-4xl md:text-6xl font-bold tracking-tight text-zinc-900 dark:text-white font-display mb-6">
-							{project.title}
-						</h1>
-						<p className="text-lg md:text-xl leading-relaxed text-zinc-600 dark:text-zinc-300">
-							{project.description}
-						</p>
-					</div>
-
-                    {/* Action Buttons */}
-					<div className="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none">
-						<div className="flex flex-wrap justify-center gap-4">
-							{links.map((link) => (
-								<Link 
-                                    target="_blank" 
-                                    key={link.label} 
-                                    href={link.href} 
-                                    className="flex items-center gap-2 px-6 py-3 rounded-full bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 hover:scale-105 transition-all font-medium shadow-sm"
-                                >
-                                    {link.icon}
-									{link.label}
-								</Link>
-							))}
-						</div>
-					</div>
-				</div>
-			</div>
-		</header>
-	);
-};
+import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
+import { useLanguage } from "@/app/components/language-provider";
+import { hasArtwork, hasVideo, ProjectArtwork } from "@/app/components/project-art";
+import { Mesh } from "@/app/components/mesh";
+import { hostOf } from "@/app/components/project-grid";
+type Props = { project: { slug: string; url?: string; title: string; description: string; repository?: string; status?: string; role?: string; tags?: string[] } };
+export function Header({ project }: Props) {
+  const { language } = useLanguage();
+  const nl = language === "nl";
+  const slug = project.slug.replace(/-nl$/, "");
+  return <header className="project-header">
+    <Link className="text-link" href="/projects"><ArrowLeft size={19} />{nl ? "Alle projecten" : "All projects"}</Link>
+    <div className="page-heading"><h1>{project.title}</h1><p>{project.description}</p></div>
+    {(project.url || project.repository) && <div className="project-actions">{project.url && <a className="button" href={project.url} target="_blank" rel="noopener noreferrer">{nl ? "Bekijk live op" : "Try it live at"} {hostOf(project.url)}<ArrowUpRight size={20} /></a>}{project.repository && <a className="button secondary" href={`https://github.com/${project.repository}`} target="_blank" rel="noopener noreferrer"><Github size={20} />{nl ? "Bekijk de code" : "View the code"}</a>}</div>}
+    {hasArtwork(slug) ? <div className="project-figure" aria-hidden={hasVideo(slug) ? undefined : true}><Mesh slug={slug} /><div className="art-panel"><ProjectArtwork slug={slug} nl={nl} priority controls /></div></div> : <div className="project-banner"><Mesh slug={slug} /></div>}
+    <dl className="project-facts">{project.status && <div><dt>Status</dt><dd>{project.status}</dd></div>}{project.role && <div><dt>{nl ? "Mijn rol" : "My role"}</dt><dd>{project.role}</dd></div>}{project.tags?.length ? <div><dt>{nl ? "Gebouwd met" : "Built with"}</dt><dd>{project.tags.join(", ")}</dd></div> : null}</dl>
+  </header>;
+}

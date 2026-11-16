@@ -1,0 +1,77 @@
+---
+title: "Floor plan platform with AI Designer"
+description: "Web app that turns architect PDFs into editable floor plans, with an AI agent that builds and furnishes rooms from plain language."
+date: "2026-09-01"
+published: true
+tags: ["Next.js", "React", "TypeScript", "Vercel AI SDK", "OpenRouter", "Fabric.js", "Cloudflare Workers", "Zoho CRM API", "Vitest", "Playwright"]
+locale: "en"
+category: "featured"
+status: "Live in production"
+role: "Sole developer, from idea to production"
+---
+
+## The problem
+
+My employer, a company that rents out office space, has several buildings. The floor plans only existed as PDFs from the architect. Every change to a layout had to go through an outside party.
+
+The square metres are the basis of the rent. They lived in drawings, in spreadsheets and in the CRM, and the three did not agree. Sales also had no current, visual overview of which rooms were free, under option or rented.
+
+## The approach
+
+I built the platform on my own, from the first idea to production. It works in six stages.
+
+### Importing the PDF
+
+The PDF is turned into a vector drawing inside the browser, using WebAssembly. You calibrate the scale once. After that the app finds walls and rooms by itself. I used classic geometry for this and no AI: a distance transform followed by watershed, a technique that fills the drawing like water and stops at narrow points. A doorway is such a narrow point, so it becomes a room boundary without any extra rule. Room numbers and names are read from the text in the PDF.
+
+### Drawing
+
+You draw walls, and the rooms and their square metres follow. A wall drawn through a room splits it in two straight away. Curved walls are supported, both arcs and Bézier curves, with an exact area calculation.
+
+### AI Designer
+
+This is a chat panel where you type what you want, for example a phone room of 2 by 3 metres with a desk. The agent reads the floor plan, builds with 22 tools, checks its own work and shows the result as an animation. You then choose Accept or Reject. Rejecting is one undo step.
+
+### Furnishing
+
+There is a furniture library and a collision engine I wrote myself. It also checks walking space against NEN 1824, the Dutch standard for workplace dimensions.
+
+### CRM link
+
+Rooms and square metres sync both ways with Zoho CRM. There is a practice environment and a live one. You get a preview before every sync. The link never creates duplicate records and never deletes anything.
+
+### Floor plan map
+
+This is a separate web app for sales. It shows all buildings and floors, with every room coloured by availability. It is built for use on a phone.
+
+## What makes the AI Designer different
+
+The AI proposes and the application carries out. Every action of the agent goes through the same code as an action by a user, and is validated in the same way.
+
+The guarantees are in code, not in the prompt. Existing furniture is protected. Nothing can go through a wall. A group of items moves completely or not at all. When the agent is unsure, it first asks a question with buttons to choose from.
+
+The agent sees the drawing through an annotated image with a chessboard grid. It reasons about each room in that room's own coordinate system, which matters in buildings that stand at an angle.
+
+I measured the cost instead of guessing. Logging per request showed that about 99% of the cost came from context that was sent again and again. I fixed that with a floor plan memory that only sends the plan when it has changed, by trimming old read results, with a prompt that can be cached and by bundling actions.
+
+The platform does not depend on one AI model, because all calls go through OpenRouter. AI vision recognises sanitary fittings inside a box you draw. Its answer is treated as untrusted input and validated before use.
+
+## The result
+
+The platform is live in production. Layouts are now made in-house instead of by an outside party. The square metres come from one source and give the same answer every time. Sales can see at a glance what is available.
+
+## Key figures
+
+- About 7 months of work
+- About 100,000 lines of TypeScript
+- About 2,300 automated tests, plus 21 end-to-end tests with real touch gestures
+- 22 AI tools covered by 372 tests
+- Detection on a 9-storey building found 145 rooms and left 0 loose walls
+- Square metres are deterministic across 4,284 permutations, guarded by a regression test over 655 real rooms
+- Moving the map from SVG to canvas took the style work per pinch on mobile from about 1 second to 0 ms
+
+## My role
+
+I did all of it: collecting the requirements, design and architecture, building the app, the AI layer and the integrations, and testing on real drawings. I also gave the demo and wrote a 32-page manual and a knowledge base.
+
+I built it with Claude Code as a pair programmer. I decided the architecture, wrote the specs and verified everything with tests and measurements.

@@ -1,71 +1,31 @@
 "use client";
 import { InfoPageLayout } from "../components/info-page-layout";
 import { useLanguage } from "../components/language-provider";
-
+import Link from "next/link";
 export default function AboutPage() {
-  const { language } = useLanguage();
-
-  // English Content
-  const contentEn = (
-    <div className="space-y-6 text-zinc-600 dark:text-zinc-400">
-      <p className="text-xl text-zinc-900 dark:text-zinc-200 font-medium">
-        It all started with a simple HTML file and the freedom of Linux.
-      </p>
-      <p>
-        My journey into technology began as a hobby, sparked by the sheer fun of creating my first website and the endless possibilities of open-source systems like Linux. That initial curiosity quickly evolved into a mission when I started my own e-commerce business, MKB Trading.
-      </p>
-      <p>
-        I was on the front lines, and while I genuinely enjoy talking to customers, I realized that manual customer support was consuming all my time. With the rise of AI, I saw an opportunity. I started small, building tools to translate product descriptions, but soon I asked myself a bigger question: "Could I build an AI that doesn't just answer questions, but actually helps customers?" The challenge was so captivating that I dove in completely, driven by the passion for building it.
-      </p>
-      <p>
-        The result is my proudest achievement: a hybrid AI agent that is not only advanced and realistic but is also bound by programmatic rules it cannot break. The feedback was incredible. Customers were happier because they received accurate, thoughtful answers almost instantly. This proved my most important lesson: AI isn't just a tool for cutting costs; it's a tool for creating a better experience for everyone, both the business and the customer.
-      </p>
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-        <div className="p-6 bg-white dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
-           <h3 className="text-zinc-900 dark:text-white font-bold mb-2">My Philosophy</h3>
-           <p>Build systems that empower both the business and its customers. Technology should be a win-win.</p>
-        </div>
-        <div className="p-6 bg-white dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
-           <h3 className="text-zinc-900 dark:text-white font-bold mb-2">My Impact</h3>
-           <p>Transformed customer support into a better, faster experience while reducing operational costs to less than €30/month.</p>
-        </div>
-      </div>
-    </div>
-  );
-
-  // Dutch Content
-  const contentNl = (
-    <div className="space-y-6 text-zinc-600 dark:text-zinc-400">
-      <p className="text-xl text-zinc-900 dark:text-zinc-200 font-medium">
-        Het begon allemaal met een simpel HTML-bestand en de vrijheid van Linux.
-      </p>
-      <p>
-        Mijn reis in de technologie begon als een hobby, aangewakkerd door het plezier van het maken van mijn eerste website en de eindeloze mogelijkheden van open-source systemen zoals Linux. Die aanvankelijke nieuwsgierigheid groeide al snel uit tot een missie toen ik mijn eigen e-commercebedrijf, MKB Trading, startte.
-      </p>
-      <p>
-        Ik stond in de frontlinie. Hoewel ik het oprecht leuk vind om met klanten te praten, realiseerde ik me dat handmatige klantenservice al mijn tijd opslokte. Met de opkomst van AI zag ik een kans. Ik begon klein, met tools om productbeschrijvingen te vertalen, maar al snel stelde ik mezelf een grotere vraag: "Zou ik een AI kunnen bouwen die niet alleen vragen beantwoordt, maar klanten ook echt helpt?" De uitdaging was zo boeiend dat ik er volledig indook, gedreven door de passie voor het bouwen.
-      </p>
-      <p>
-        Het resultaat is mijn grootste trots: een hybride AI-agent die niet alleen geavanceerd en realistisch is, maar ook gebonden is aan programmatische regels die hij niet kan overtreden. De feedback was ongelooflijk. Klanten waren blijer omdat ze vrijwel direct accurate, meedenkende antwoorden kregen. Dit bewees mijn belangrijkste les: AI is niet alleen een tool om kosten te besparen; het is een tool om een betere ervaring te creëren voor iedereen, zowel voor het bedrijf als voor de klant.
-      </p>
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-        <div className="p-6 bg-white dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
-           <h3 className="text-zinc-900 dark:text-white font-bold mb-2">Mijn Filosofie</h3>
-           <p>Bouw systemen die zowel het bedrijf als zijn klanten versterken. Technologie moet een win-win zijn.</p>
-        </div>
-        <div className="p-6 bg-white dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
-           <h3 className="text-zinc-900 dark:text-white font-bold mb-2">Mijn Impact</h3>
-           <p>Klantenservice getransformeerd naar een betere, snellere ervaring en tegelijk de operationele kosten verlaagd naar minder dan €30/maand.</p>
-        </div>
-      </div>
-    </div>
-  );
-
-  return (
-    <InfoPageLayout
-      title={language === "en" ? "My Journey" : "Mijn Reis"}
-      description={language === "en" ? "From Hobbyist to Problem-Solver." : "Van Hobbyist naar Probleemoplosser."}
-      content={language === "en" ? contentEn : contentNl}
-    />
-  );
+  const { language, experience } = useLanguage();
+  const nl = language === "nl";
+  return <InfoPageLayout title={nl ? "Over mij" : "About me"} description={nl ? "Ik ben Mehmet, AI software engineer uit Enschede." : "I’m Mehmet, an AI software engineer from Enschede."} timelineItems={experience} content={nl ? <>
+    <p className="lead">Ik ontwerp en bouw AI-applicaties en AI-agents, en breng ze zelf in productie.</p>
+    <p>Het begon met een simpel HTML-bestand en Linux. Ik leerde programmeren door websites te maken en servers te beheren. Toen ik met MKB Trading mijn eigen webshops begon, kreeg dat een praktische richting: ik zag elke dag hoeveel tijd er opging aan terugkerend werk.</p>
+    <h2>Van eigen probleem naar product</h2>
+    <p>De klantenservice van mijn webshops kostte de meeste tijd. Daarom bouwde ik een AI-agent die e-mails van klanten zelfstandig beantwoordt, in hun eigen taal en op basis van echte bestelgegevens. Die agent werd <Link href="/projects/aiders-nl">Aiders</Link>. Het kwam door de review van Shopify en staat nu in de Shopify App Store.</p>
+    <h2>Enige developer</h2>
+    <p>Sinds februari 2026 werk ik parttime als software developer bij een verhuurder van kantoorruimte. Ik ben daar de enige developer, dus ik doe alles: wensen ophalen, ontwerpen, bouwen, testen en uitleggen. Het grootste project is een <Link href="/projects/floorplan-platform-nl">plattegrondplatform met een eigen AI-agent</Link>. Daarnaast bouwde ik een boekingstool, koppelingen met de boekhouding en veel kleinere automatiseringen.</p>
+    <h2>Hoe ik werk</h2>
+    <p>Ik denk in oplossingen en houd het graag eenvoudig. AI gebruik ik waar het werk scheelt, met vaste regels in de code voor alles wat nooit mis mag gaan. Ik meet wat iets kost en test op echte data. En ik leg complexe techniek helder uit aan collega's en klanten.</p>
+    <p>Ik spreek Nederlands, Engels en Turks.</p>
+    <p><Link href="/projects">Bekijk mijn projecten</Link> of lees meer over <Link href="/programming">mijn technische werk</Link>.</p>
+  </> : <>
+    <p className="lead">I design and build AI applications and agents, and I bring them to production myself.</p>
+    <p>It started with a simple HTML file and Linux. I learned programming by making websites and managing servers. When I started my own webshops with MKB Trading, that interest became practical: every day I saw how much time went into repetitive work.</p>
+    <h2>From my own problem to a product</h2>
+    <p>Customer service took the most time in my webshops. So I built an AI agent that answers customer emails by itself, in the customer’s language and based on real order data. That agent became <Link href="/projects/aiders">Aiders</Link>. It passed the Shopify review and is now in the Shopify App Store.</p>
+    <h2>The only developer</h2>
+    <p>Since February 2026 I have worked part-time as a software developer at a company that rents out office space. I am the only developer there, so I do everything: gathering requirements, design, building, testing and explaining. The largest project is a <Link href="/projects/floorplan-platform">floor plan platform with its own AI agent</Link>. I also built a booking tool, links with the accounting system and many smaller automations.</p>
+    <h2>How I work</h2>
+    <p>I think in solutions and like to keep things simple. I use AI where it saves work, with fixed rules in code for everything that must never go wrong. I measure what things cost and test on real data. And I explain complex technology clearly to colleagues and customers.</p>
+    <p>I speak Dutch, English and Turkish.</p>
+    <p><Link href="/projects">See my projects</Link> or read more about <Link href="/programming">my technical work</Link>.</p>
+  </>} />;
 }

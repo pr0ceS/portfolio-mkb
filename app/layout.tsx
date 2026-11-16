@@ -1,79 +1,22 @@
 import "../global.css";
-import { Inter } from "next/font/google"; 
-import LocalFont from "next/font/local";
-import { ThemeProvider } from "./components/theme-provider"; 
-import { Metadata } from "next";
-import { Analytics } from "./components/analytics";
+import type { Metadata } from "next";
+import { ThemeProvider } from "./components/theme-provider";
 import { LanguageProvider } from "./components/language-provider";
+import { Analytics } from "./components/analytics";
+import { Navigation } from "./components/nav";
+import { Footer } from "./components/footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://mkboz.com'),
-  title: {
-    default: "mkboz.com",
-    template: "%s | mkboz.com",
-  },
-  description: "Portfolio of Mehmet Boz - Developer",
-  openGraph: {
-    title: "mkboz.com",
-    description: "Portfolio of Mehmet Boz - Developer",
-    url: "https://mkboz.com",
-    siteName: "mkboz.com",
-    images: [
-      {
-        url: "https://mkboz.com/og.png",
-        width: 1920,
-        height: 1080,
-      },
-    ],
-    locale: "en-US",
-    type: "website",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  twitter: {
-    title: "Mehmet Boz",
-    card: "summary_large_image",
-  },
-  icons: {
-    shortcut: "/favicon.png",
-  },
+  metadataBase: new URL("https://mkboz.com"),
+  title: { default: "Mehmet Boz | AI Software Engineer", template: "%s | Mehmet Boz" },
+  description: "Mehmet Boz, AI software engineer from Enschede. I design and build AI applications and agents, from the first idea to production.",
+  openGraph: { title: "Mehmet Boz | AI Software Engineer", description: "AI applications and agents, from the first idea to production. See my work and experience.", url: "https://mkboz.com", siteName: "Mehmet Boz", locale: "en_US", type: "website" },
+  robots: { index: true, follow: true },
+  twitter: { title: "Mehmet Boz | AI Software Engineer", card: "summary" },
 };
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
 
-const calSans = LocalFont({
-  src: "../public/fonts/CalSans-SemiBold.ttf",
-  variable: "--font-calsans",
-});
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" className={[inter.variable, calSans.variable].join(" ")}>
-      <head>
-        <Analytics />
-      </head>
-      <body className="bg-zinc-50 dark:bg-black transition-colors duration-300">
-        <ThemeProvider>
-          <LanguageProvider>
-            {children}
-          </LanguageProvider>
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+// Apply the saved theme before paint, while keeping the server-rendered page readable.
+const themeScript = `(function(){var t='dark';try{if(localStorage.getItem('theme')==='light')t='light'}catch(e){}document.documentElement.classList.toggle('dark',t==='dark')})()`;
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return <html lang="en" className="dark" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: themeScript }} /><Analytics /></head><body id="top"><ThemeProvider><LanguageProvider><Navigation />{children}<Footer /></LanguageProvider></ThemeProvider></body></html>;
 }

@@ -38,6 +38,10 @@ export const Project = defineDocumentType(() => ({
             default: "en",
             required: false,
 		},
+		category: { type: "string", required: false },
+		status: { type: "string", required: false },
+		role: { type: "string", required: false },
+		image: { type: "string", required: false },
 	},
 	computedFields,
 }));

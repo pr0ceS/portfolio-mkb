@@ -1,0 +1,21 @@
+---
+title: "Abonnementen-sync tussen CRM en boekhouding debugbaar gemaakt"
+description: "Vage foutmeldingen in een sync van Zoho CRM naar Exact Online, herleid tot de exacte oorzaak."
+date: "2026-03-15"
+published: true
+tags: ["Deluge","Zoho CRM","Exact Online","SyncCentral API"]
+locale: "nl"
+category: "integration"
+---
+
+## Het probleem
+
+De koppeling die deals als abonnement naar Exact Online stuurt, gaf vage foutmeldingen. Niemand kon de oorzaak vinden.
+
+## De aanpak
+
+Ik heb volledige logging en diagnostiek toegevoegd zonder de logica te veranderen: alle records, requests en responses per API-call, en alle foutregels in plaats van alleen de eerste.
+
+## Het resultaat
+
+Fouten zijn nu herleidbaar tot de exacte oorzaak, bijvoorbeeld een contactpersoon die in een andere administratie staat.

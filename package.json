@@ -6,7 +6,8 @@
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
-    "fmt": "pnpm rome check . --apply-unsafe && pnpm rome format . --write"
+    "fmt": "pnpm rome check . --apply-unsafe && pnpm rome format . --write",
+    "art": "node scripts/make-art.mjs"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.4.0",
@@ -14,12 +15,12 @@
     "@next/mdx": "^13.5.4",
     "@upstash/redis": "^1.23.3",
     "contentlayer": "^0.3.4",
-    "eslint-config-next": "^16.0.3",
+    "eslint-config-next": "^16.4.6",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.284.0",
     "markdown-wasm": "^1.2.0",
     "mermaid": "^11.12.1",
-    "next": "16.0.7",
+    "next": "16.4.6",
     "next-contentlayer": "^0.3.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

@@ -1,0 +1,21 @@
+---
+title: "Security investigation into phishing messages"
+description: "Tracing why guests received a phishing link shortly after booking a hotel room online."
+date: "2026-02-15"
+published: true
+tags: ["Log analysis","WordPress security","Incident response"]
+locale: "en"
+category: "ai"
+---
+
+## The problem
+
+Guests who booked a hotel room through the website received a WhatsApp or text message with a phishing link shortly after. Nobody knew why.
+
+## The approach
+
+I analysed the firewall and application logs. A vulnerable WordPress plugin (Gravity SMTP, CVE-2026-4020) was being probed on several sites, and there were attempts on a suspicious PHP file in the uploads folder. I set up a test plan with canary bookings to isolate the leak per system.
+
+## The result
+
+Concrete leads, a plan of action (update, rotate API keys, check for backdoors) and a method to prove where the leak is.

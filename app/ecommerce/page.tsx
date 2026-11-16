@@ -1,60 +1,26 @@
 "use client";
 import { InfoPageLayout } from "../components/info-page-layout";
 import { useLanguage } from "../components/language-provider";
-
+import Link from "next/link";
 export default function EcommercePage() {
   const { language } = useLanguage();
-
-  const contentEn = (
-    <div className="space-y-6 text-zinc-600 dark:text-zinc-400">
-      <p className="lead text-2xl text-zinc-900 dark:text-zinc-200 font-display">
-        Automation is not a luxury; it's the key to profitable scale.
-      </p>
-      <p>
-        Having run my own e-commerce ventures, I've lived the daily grind: endless customer emails, tedious product launches, and the constant battle to optimize ad spend. This hands-on experience taught me that true scalability comes from automating processes, not just working harder.
-      </p>
-      <ul className="list-disc pl-5 space-y-2 text-zinc-700 dark:text-zinc-300 marker:text-zinc-500">
-        <li><strong>Customer Support Automation:</strong> Reduced manual email handling by over 90% by developing a hybrid AI agent that understands context and executes tasks.</li>
-        <li><strong>Marketing & Sales Automation:</strong> Automated the entire product-to-ad pipeline, cutting launch times from hours to minutes.</li>
-        <li><strong>Operational Experience:</strong> Managed international customer service, processed thousands of orders, and handled complex logistics and disputes.</li>
-      </ul>
-    </div>
-  );
-
-  const contentNl = (
-    <div className="space-y-6 text-zinc-600 dark:text-zinc-400">
-      <p className="lead text-2xl text-zinc-900 dark:text-zinc-200 font-display">
-        Automatisering is geen luxe; het is de sleutel tot winstgevende schaalvergroting.
-      </p>
-      <p>
-        Na het runnen van mijn eigen e-commerce ondernemingen, heb ik de dagelijkse sleur ervaren: eindeloze klant-e-mails, saaie productlanceringen en de constante strijd om advertentie-uitgaven te optimaliseren. Deze praktijkervaring heeft me geleerd dat echte schaalbaarheid voortkomt uit het automatiseren van processen, niet alleen uit harder werken.
-      </p>
-      <ul className="list-disc pl-5 space-y-2 text-zinc-700 dark:text-zinc-300 marker:text-zinc-500">
-        <li><strong>Klantenservice Automatisering:</strong> Handmatige e-mailafhandeling met meer dan 90% verminderd door een hybride AI-agent te ontwikkelen die context begrijpt en taken uitvoert.</li>
-        <li><strong>Marketing & Sales Automatisering:</strong> De volledige product-naar-advertentie-pijplijn geautomatiseerd, waardoor lanceringstijden zijn teruggebracht van uren naar minuten.</li>
-        <li><strong>Operationele Ervaring:</strong> Internationale klantenservice beheerd, duizenden bestellingen verwerkt en complexe logistiek en geschillen afgehandeld.</li>
-      </ul>
-    </div>
-  );
-
-  const timelineEn = [
-    { year: "2023", title: "Launched MKAI Platforms", description: "Began development of a proprietary software suite to solve the biggest bottlenecks in my own e-commerce operations." },
-    { year: "2022", title: "Managed MKB Trading", description: "Successfully launched and scaled an e-commerce business, handling all aspects from marketing and sales to customer support and fulfillment." },
-    { year: "2021", title: "First Shopify Store", description: "Built and ran my first e-commerce store, learning the fundamentals of online retail and digital marketing." },
+  const nl = language === "nl";
+  const timeline = nl ? [
+    { year: "2026", title: "Aiders", description: "Mijn AI-klantenservice-agent gelanceerd in de Shopify App Store." },
+    { year: "2023", title: "MKAI Platforms", description: "Begonnen met eigen software om terugkerend werk in mijn webwinkels te automatiseren." },
+    { year: "2022", title: "MKB Trading", description: "Een e-commercebedrijf opgezet en gerund, met verantwoordelijkheid voor winkels, marketing, klantenservice en logistiek." },
+    { year: "2021", title: "Eerste Shopify-winkel", description: "Mijn eerste webwinkel gebouwd en gerund. Hier leerde ik de basis van online verkoop en digitale marketing." }
+  ] : [
+    { year: "2026", title: "Aiders", description: "Launched my AI customer service agent in the Shopify App Store." },
+    { year: "2023", title: "MKAI Platforms", description: "Started building software to automate repetitive work in my online stores." },
+    { year: "2022", title: "MKB Trading", description: "Built and ran an e-commerce business, managing stores, marketing, customer support and fulfilment." },
+    { year: "2021", title: "First Shopify store", description: "Built and ran my first online store, learning online retail and digital marketing." }
   ];
-
-  const timelineNl = [
-    { year: "2023", title: "Lancering MKAI Platforms", description: "Start van de ontwikkeling van een eigen software suite om de grootste knelpunten in mijn e-commerce activiteiten op te lossen." },
-    { year: "2022", title: "Beheer MKB Trading", description: "Succesvol een e-commerce bedrijf gelanceerd en opgeschaald, waarbij ik alle aspecten van marketing en verkoop tot klantenservice en logistiek heb beheerd." },
-    { year: "2021", title: "Eerste Shopify Winkel", description: "Mijn eerste e-commerce winkel gebouwd en gerund, en zo de basisprincipes van online retail en digitale marketing geleerd." },
-  ];
-
-  return (
-    <InfoPageLayout
-      title="E-commerce"
-      description={language === "en" ? "From Operator to Automator." : "Van Operator naar Automator."}
-      content={language === "en" ? contentEn : contentNl}
-      timelineItems={language === "en" ? timelineEn : timelineNl}
-    />
-  );
+  return <InfoPageLayout title="E-commerce" description={nl ? "De achtergrond van veel van mijn softwareprojecten." : "The background to many of my software projects."} timelineItems={timeline} content={<>
+    <p className="lead">{nl ? "Mijn webwinkels gaven me concrete problemen om software voor te bouwen." : "Running online stores gave me practical problems to build software for."}</p>
+    <p>{nl ? "Bij MKB Trading werkte ik aan de hele winkel: van Astro- en React-websites en Shopify-thema’s tot productbeheer, advertenties en klantenservice. Daardoor zag ik zelf welke taken tijd kosten en waar software kan helpen." : "At MKB Trading, I worked across the store: Astro and React websites, Shopify themes, product management, advertising and customer support. That gave me a direct understanding of which tasks take time and where software can help."}</p>
+    <h2>{nl ? "Wat ik heb gebouwd" : "What I built"}</h2>
+    <ul><li>{nl ? <><Link href="/projects/freddys-store-nl">Freddy's Store</Link>: een headless webshop met Medusa, Astro en een zelfgebouwde Mollie-betaalintegratie.</> : <><Link href="/projects/freddys-store">Freddy’s Store</Link>: a headless webshop with Medusa, Astro and a Mollie payment integration I built myself.</>}</li><li>{nl ? <><Link href="/projects/aiders-nl">Aiders</Link>: een AI-agent die klantenservice-e-mails voor Shopify-webshops afhandelt.</> : <><Link href="/projects/aiders">Aiders</Link>: an AI agent that handles customer service emails for Shopify stores.</>}</li><li>{nl ? "Internationale Shopify-webshops met eigen thema's, in onder andere Denemarken, Duitsland en het VK." : "International Shopify stores with custom themes, in Denmark, Germany and the UK, among others."}</li><li>{nl ? "Tools voor productonderzoek, winkelupdates, advertenties en het bijhouden van kosten en omzet." : "Tools for product research, store updates, advertising and tracking costs and revenue."}</li></ul>
+    <p>{nl ? "Die ervaring neem ik mee in mijn werk als developer: begrijpen hoe mensen software gebruiken en vervolgens bouwen wat ze nodig hebben." : "I bring that experience to my work as a developer: understanding how people use software, then building what they need."}</p><p><Link href="/projects">{nl ? "Bekijk de softwareprojecten" : "See the software projects"}</Link>.</p>
+  </>} />;
 }

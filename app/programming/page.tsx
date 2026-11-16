@@ -1,84 +1,18 @@
 "use client";
 import { InfoPageLayout } from "../components/info-page-layout";
 import { useLanguage } from "../components/language-provider";
-
+import Link from "next/link";
 export default function ProgrammingPage() {
-  const { language } = useLanguage();
-
-  const contentEn = (
-    <div className="space-y-6 text-zinc-600 dark:text-zinc-400">
-      <p className="lead text-2xl text-zinc-900 dark:text-zinc-200 font-display">
-        Pragmatic solutions, not just elegant code.
-      </p>
-      <p>
-        My journey into programming started as a hobby and grew into a passion for solving real-world problems. I specialize in building robust, event-driven systems and intelligent agents. My expertise lies in the Python and JavaScript ecosystems, leveraging modern technologies to create scalable and efficient applications from the ground up.
-      </p>
-      <div className="grid grid-cols-2 gap-6 my-8">
-         <div>
-            <h4 className="text-zinc-900 dark:text-white font-bold border-b border-zinc-200 dark:border-zinc-700 pb-2 mb-2">Backend</h4>
-            <p className="text-sm">Python (FastAPI), Node.js (Express), BullMQ, Redis, MongoDB</p>
-         </div>
-         <div>
-            <h4 className="text-zinc-900 dark:text-white font-bold border-b border-zinc-200 dark:border-zinc-700 pb-2 mb-2">Frontend</h4>
-            <p className="text-sm">Next.js, React, Astro.js, JavaScript / TypeScript, Tailwind CSS</p>
-         </div>
-         <div>
-            <h4 className="text-zinc-900 dark:text-white font-bold border-b border-zinc-200 dark:border-zinc-700 pb-2 mb-2">AI/ML</h4>
-            <p className="text-sm">LangGraph, RAG, Vector Databases (Qdrant), OpenAI API</p>
-         </div>
-         <div>
-            <h4 className="text-zinc-900 dark:text-white font-bold border-b border-zinc-200 dark:border-zinc-700 pb-2 mb-2">DevOps & Infra</h4>
-            <p className="text-sm">Docker, Nginx, AWS (S3, SES), Vercel, CI/CD</p>
-         </div>
-      </div>
-    </div>
-  );
-
-  const contentNl = (
-    <div className="space-y-6 text-zinc-600 dark:text-zinc-400">
-      <p className="lead text-2xl text-zinc-900 dark:text-zinc-200 font-display">
-        Pragmatische oplossingen, niet alleen elegante code.
-      </p>
-      <p>
-        Mijn reis in het programmeren begon als een hobby en groeide uit tot een passie voor het oplossen van problemen uit de echte wereld. Ik ben gespecialiseerd in het bouwen van robuuste, event-driven systemen en intelligente agents. Mijn expertise ligt in de Python- en JavaScript-ecosystemen, waarbij ik moderne technologieën gebruik om schaalbare en efficiënte applicaties vanaf de basis te creëren.
-      </p>
-      <div className="grid grid-cols-2 gap-6 my-8">
-         <div>
-            <h4 className="text-zinc-900 dark:text-white font-bold border-b border-zinc-200 dark:border-zinc-700 pb-2 mb-2">Backend</h4>
-            <p className="text-sm">Python (FastAPI), Node.js (Express), BullMQ, Redis, MongoDB</p>
-         </div>
-         <div>
-            <h4 className="text-zinc-900 dark:text-white font-bold border-b border-zinc-200 dark:border-zinc-700 pb-2 mb-2">Frontend</h4>
-            <p className="text-sm">Next.js, React, Astro.js, JavaScript / TypeScript, Tailwind CSS</p>
-         </div>
-         <div>
-            <h4 className="text-zinc-900 dark:text-white font-bold border-b border-zinc-200 dark:border-zinc-700 pb-2 mb-2">AI/ML</h4>
-            <p className="text-sm">LangGraph, RAG, Vector Databases (Qdrant), OpenAI API</p>
-         </div>
-         <div>
-            <h4 className="text-zinc-900 dark:text-white font-bold border-b border-zinc-200 dark:border-zinc-700 pb-2 mb-2">DevOps & Infra</h4>
-            <p className="text-sm">Docker, Nginx, AWS (S3, SES), Vercel, CI/CD</p>
-         </div>
-      </div>
-    </div>
-  );
-
-  const timelineEn = [
-    { year: "2023-Present", title: "Founder & Lead Developer, MKAI Platforms", description: "Architecting and building a full-stack, AI-powered e-commerce automation suite from scratch." },
-    { year: "2020-2022", title: "Independent Developer", description: "Developed custom tools and websites as a hobby, mastering foundational concepts of web development and system administration." },
-  ];
-
-  const timelineNl = [
-    { year: "2023-Heden", title: "Oprichter & Lead Developer, MKAI Platforms", description: "Ontwerpen en bouwen van een volledige, AI-gedreven e-commerce automatiseringssuite vanaf nul." },
-    { year: "2020-2022", title: "Onafhankelijk Ontwikkelaar", description: "Als hobby custom tools en websites ontwikkeld, waarbij ik fundamentele concepten van webontwikkeling en systeembeheer heb geleerd." },
-  ];
-
-  return (
-    <InfoPageLayout
-      title={language === "en" ? "Programming" : "Programmeren"}
-      description={language === "en" ? "Full-Stack Engineering with a focus on impact." : "Full-Stack Engineering met een focus op impact."}
-      content={language === "en" ? contentEn : contentNl}
-      timelineItems={language === "en" ? timelineEn : timelineNl}
-    />
-  );
+  const { language, skillGroups } = useLanguage();
+  const nl = language === "nl";
+  const suffix = nl ? "-nl" : "";
+  return <InfoPageLayout title={nl ? "Programmeren" : "Programming"} description={nl ? "Van AI-agent tot interface, en alles ertussen." : "From AI agent to interface, and everything in between."} content={<>
+    <p className="lead">{nl ? "Ik bouw AI-agents, webapplicaties en koppelingen tussen systemen, meestal van begin tot eind." : "I build AI agents, web applications and links between systems, usually from start to finish."}</p>
+    <p>{nl ? "Voor AI-werk gebruik ik vooral Python en TypeScript. Agents bouw ik met LangGraph of de Vercel AI SDK, met RAG zodat antwoorden op echte data zijn gebaseerd. De applicaties eromheen bouw ik met Next.js, React en FastAPI." : "For AI work I mostly use Python and TypeScript. I build agents with LangGraph or the Vercel AI SDK, with RAG so that answers are based on real data. The applications around them are built with Next.js, React and FastAPI."}</p>
+    <h2>{nl ? "Waar ik mee werk" : "What I work with"}</h2><div className="technical-grid">{skillGroups.map(([title, tools]) => <div key={title}><h3>{title}</h3><p>{tools}</p></div>)}</div>
+    <h2>{nl ? "In de praktijk" : "In practice"}</h2>
+    <p>{nl ? <>Het <Link href={`/projects/floorplan-platform${suffix}`}>plattegrondplatform</Link> is ongeveer 100.000 regels TypeScript met ruim 2.300 geautomatiseerde tests. De AI-agent daarin werkt met 22 gevalideerde tools. <Link href={`/projects/aiders${suffix}`}>Aiders</Link> is een multi-agent systeem in Python met LangGraph, Qdrant, Celery en Redis. <Link href={`/projects/freddys-store${suffix}`}>Freddy's Store</Link> draait op Medusa en Astro, met een zelfgebouwde betaalintegratie.</> : <>The <Link href={`/projects/floorplan-platform${suffix}`}>floor plan platform</Link> is about 100,000 lines of TypeScript with more than 2,300 automated tests. Its AI agent works with 22 validated tools. <Link href={`/projects/aiders${suffix}`}>Aiders</Link> is a multi-agent system in Python with LangGraph, Qdrant, Celery and Redis. <Link href={`/projects/freddys-store${suffix}`}>Freddy’s Store</Link> runs on Medusa and Astro, with a payment integration I built myself.</>}</p>
+    <p>{nl ? "Ik werk AI-native, met Claude Code als pair-programmer. Ik bepaal de architectuur, schrijf de specificaties en controleer alles met tests en metingen." : "I work AI-native, with Claude Code as a pair programmer. I decide the architecture, write the specifications and verify everything with tests and measurements."}</p>
+    <p><Link href="/projects">{nl ? "Bekijk alle projecten" : "See all projects"}</Link>.</p>
+  </>} />;
 }

@@ -1,0 +1,21 @@
+---
+title: "Tickets automatisch doorzetten naar de externe IT-partner"
+description: "Een terugkerende bug die al vaker was opgelost, nu bij de oorzaak aangepakt."
+date: "2026-04-15"
+published: true
+tags: ["Zoho Desk","Deluge","Workflows","Email templates"]
+locale: "nl"
+category: "integration"
+---
+
+## Het probleem
+
+ICT-tickets die naar de externe IT-partner gingen, kwamen in hun systeem (Autotask) binnen als “Company Unknown”.
+
+## De aanpak
+
+Ik heb de tijdlijn van de automatiseringsketen stap voor stap geanalyseerd. Het werkte als beheerder en faalde bij gewone medewerkers: veldrechten maakten het veld leeg in hun mails. Dezelfde oorzaak zat achter een tweede bug, waarbij tickets aan het verkeerde team werden toegewezen. Die functies heb ik herschreven.
+
+## Het resultaat
+
+Beide bugs zijn structureel opgelost. En een vaste debugregel: werkt het bij mij en niet bij anderen, dan eerst de rechten controleren.

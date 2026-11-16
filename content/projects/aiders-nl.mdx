@@ -1,0 +1,38 @@
+---
+title: "Aiders"
+description: "AI-klantenservice-agent voor Shopify-webshops die klantmails zelfstandig beantwoordt, in meerdere talen."
+date: "2026-06-01"
+url: "https://aiders.app"
+published: true
+tags: ["Python", "LangGraph", "RAG", "Qdrant", "FastAPI", "Celery", "Redis", "Supabase", "Next.js", "Shopify API"]
+locale: "nl"
+category: "featured"
+status: "Live in de Shopify App Store"
+role: "Ontworpen en gebouwd, van architectuur tot app-store-review"
+---
+
+## Het probleem
+
+Webshops krijgen veel mails met de vraag "waar is mijn bestelling". Bij dropshippers is dat het ergst, omdat hun levertijden lang zijn.
+
+Trage antwoorden leiden tot boze klanten en slechte reviews. Ze leiden ook tot chargebacks, waarbij een klant het geld terugvraagt via de bank. Bij genoeg chargebacks kan een webshop zijn betaalprovider kwijtraken, en dan kan hij niets meer verkopen.
+
+Ik heb dit zelf meegemaakt met mijn eigen webshops. Daarom heb ik Aiders gebouwd.
+
+## De aanpak
+
+Aiders is een SaaS-product dat binnenkomende klantenservice-mails leest en zelf beantwoordt, in de taal van de klant.
+
+De kern is een multi-agent systeem in Python met LangGraph. Ik heb het opgezet als swarm. Dat betekent dat meerdere gespecialiseerde agents een gesprek aan elkaar doorgeven, in plaats van één agent die alles probeert te doen.
+
+De antwoorden moeten kloppen. Daarvoor gebruik ik RAG, kort voor retrieval-augmented generation: voordat de agent schrijft, zoekt hij de juiste winkel- en orderdata op en baseert hij zijn antwoord daarop. Die data staat in Qdrant, een vector database. Zo verzint de agent niets.
+
+Mails worden op de achtergrond verwerkt. Celery-workers en Redis regelen dat, zodat een volle inbox niets vertraagt. De API is geschreven in Python met FastAPI. Supabase levert de PostgreSQL-database en het inloggen. Alles draait in Docker-containers op Fly.io.
+
+Webshopeigenaren krijgen een dashboard, gebouwd met Next.js. Er is ook een affiliate- en partnersysteem.
+
+## Het resultaat
+
+Aiders is door de review van Shopify gekomen en staat live in de Shopify App Store.
+
+Het project laat het hele traject van een AI-agent zien: de architectuur, de bouw, het draaien in productie en de review van een app store.

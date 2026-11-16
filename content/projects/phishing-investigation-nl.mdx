@@ -1,0 +1,21 @@
+---
+title: "Security-onderzoek naar phishingberichten"
+description: "Uitzoeken waarom gasten kort na een online hotelboeking een phishinglink ontvingen."
+date: "2026-02-15"
+published: true
+tags: ["Log analysis","WordPress security","Incident response"]
+locale: "nl"
+category: "ai"
+---
+
+## Het probleem
+
+Gasten die via de website een hotelkamer boekten, kregen kort daarna een WhatsApp of sms met een phishinglink. Niemand wist waarom.
+
+## De aanpak
+
+Ik heb de firewall- en applicatielogs geanalyseerd. Een kwetsbare WordPress-plugin (Gravity SMTP, CVE-2026-4020) werd op meerdere sites afgetast, en er waren pogingen op een verdacht PHP-bestand in de uploads-map. Ik heb een testplan opgezet met kanarie-boekingen om het lek per systeem te isoleren.
+
+## Het resultaat
+
+Concrete aanwijzingen, een plan van aanpak (updaten, API-sleutels roteren, backdoor-controle) en een methode om het lek te bewijzen.

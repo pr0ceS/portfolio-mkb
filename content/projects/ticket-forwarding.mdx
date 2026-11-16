@@ -1,0 +1,21 @@
+---
+title: "Tickets forwarded to the external IT partner"
+description: "A recurring bug that had been fixed several times before, now solved at the root."
+date: "2026-04-15"
+published: true
+tags: ["Zoho Desk","Deluge","Workflows","Email templates"]
+locale: "en"
+category: "integration"
+---
+
+## The problem
+
+IT tickets sent to the external IT partner arrived in their system (Autotask) as “Company Unknown”.
+
+## The approach
+
+I analysed the timeline of the automation chain step by step. It worked for an administrator and failed for regular staff: field permissions emptied the field in their emails. The same cause was behind a second bug, where tickets were assigned to the wrong team. I rewrote those functions.
+
+## The result
+
+Both bugs are solved for good. And a fixed debugging rule: when it works for me and not for others, check permissions first.

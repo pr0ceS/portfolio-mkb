@@ -1,0 +1,21 @@
+---
+title: "Opzeggingsproces gestroomlijnd met een validatiewidget"
+description: "Een widget in het CRM die alleen geldige opzegdatums toestaat."
+date: "2026-07-15"
+published: true
+tags: ["JavaScript","Zoho CRM Widgets SDK","Cloudflare","Deluge"]
+locale: "nl"
+category: "automation"
+---
+
+## Het probleem
+
+Bij opzeggingen moesten medewerkers zelf uitrekenen wanneer een huurder eruit mocht, met opzegtermijnen, verlengperiodes en lopende verlengingen. Dat ging vaak mis.
+
+## De aanpak
+
+Een opzegging starten werd een stap in het CRM-proces, met een eigen widget gehost op Cloudflare. De regels zitten in de widget: alleen per de eerste van de maand, de opzegtermijn moet gerespecteerd zijn, en een verlenging die nog niet is ingegaan mag worden onderbroken. Uitzonderingen vragen een verplichte reden. Getest met uitgebreide scenario's, ook voor extreme contracten.
+
+## Het resultaat
+
+Foute opzegdatums kunnen niet meer worden ingevoerd en elke uitzondering is verantwoord.

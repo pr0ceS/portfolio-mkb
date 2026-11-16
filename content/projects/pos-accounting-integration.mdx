@@ -1,0 +1,31 @@
+---
+title: "Point of sale to accounting integration"
+description: "An undocumented link between a point of sale system and the accounting software, taken apart from the outside to find its faults."
+date: "2026-04-01"
+published: true
+tags: ["Python", "REST API", "OData", "Exact Online", "Reeleezee", "Cashr", "Excel"]
+locale: "en"
+category: "integration"
+status: "Data flow mapped, test plan ready"
+role: "Analysis and scripting"
+---
+
+## The problem
+
+An existing integration sent sales from the point of sale system Cashr, through Reeleezee, to the accounting in Exact Online. An outside party had built it. There was no documentation and no source code.
+
+It had three problems. Card payments arrived as one group total instead of per item. Receipts paid "on account" were never marked as processed, so the open balance kept growing. And a revenue report per product was missing items.
+
+## The approach
+
+I took the integration apart from the outside. I used the app permissions, the Reeleezee REST API with its roughly 2,100 endpoints, and my own Python scripts.
+
+That way I found the rule that maps item codes in one system to item codes in the other. I also found the API actions that mark a receipt as processed. Then I wrote a diff script that compares the product catalogue of both systems line by line.
+
+## The result
+
+The full data flow is now mapped, from the till to the books.
+
+The diff script found wrong item mappings with wrong VAT rates. These were products that ended up on the wrong item, and so at the wrong rate.
+
+There is a plan for a golden master test: running the integration against real invoices and comparing the output with a known correct result.

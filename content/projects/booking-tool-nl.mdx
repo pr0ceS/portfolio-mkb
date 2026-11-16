@@ -1,0 +1,39 @@
+---
+title: "Boekingstool voor vergaderruimtes"
+description: "Online tool waarmee klanten zelf een vergaderruimte boeken, met live beschikbaarheid en de prijs inclusief btw."
+date: "2026-07-01"
+published: true
+tags: ["JavaScript", "Tailwind CSS", "MapLibre GL", "Cloudflare Pages Functions", "Cloudflare KV", "REST API", "OAuth 2.0", "Zoho Creator", "Zoho Desk", "Deluge"]
+locale: "nl"
+category: "featured"
+status: "Live"
+role: "Concept, UX, front-end, serverless back-end en CRM-koppeling"
+---
+
+## Het probleem
+
+Mijn werkgever, een verhuurder van kantoorruimte, verhuurt ook vergaderruimtes. Boeken ging via een lang, statisch formulier. Je zag geen beschikbaarheid en geen prijs.
+
+Elke aanvraag moest met de hand worden nagelopen, geprijsd en bevestigd. Aanvragen bleven liggen.
+
+## De aanpak
+
+Ik heb een boekingstool gebouwd die werkt als een webshop. De klant loopt er stap voor stap doorheen.
+
+Eerst kies je een locatie op een interactieve kaart. Daarna laat een kalender zien hoe druk elke dag is, met alleen de tijdsloten die echt vrij zijn. Je ziet de zalen die passen, met foto's en opstellingen. Je voegt catering toe en ziet de kosten live oplopen, met btw per tarief. Invoer wordt gecontroleerd terwijl je typt. Een terugkerende boeking maak je in één keer.
+
+Na het boeken krijgt de klant bij elke stap automatisch een mail, met het voorstel als PDF. Het team past de mailsjablonen zelf aan. Elke klant krijgt ook een persoonlijke pagina achter een veilige link, om te annuleren of om teruggebeld te worden.
+
+Voor het team is er een back-office met een overzicht per locatie. Bevestigen, afwijzen en annuleren kosten elk één klik. Boekingen met "prijs op aanvraag" kunnen achteraf geprijsd worden. Bij een bevestiging wordt automatisch een betaalverzoek aangemaakt in het ticketsysteem.
+
+Technisch is het een lichte single-page app in gewone JavaScript met Tailwind. De kaart laadt pas als hij zichtbaar is. Dat scheelt op mobiel ongeveer driekwart van het paginagewicht. De browser praat nooit rechtstreeks met het CRM. Daar zit een serverless API op Cloudflare Pages Functions tussen. Als het CRM traag is, dient een cache in Cloudflare KV als terugval. Prijzen worden in hele centen berekend, in de browser op dezelfde manier als op de server.
+
+Veel werk zat in betrouwbaarheid. De server controleert op dubbele boekingen. Alles gebruikt één tijdzone, ook rond de overgang naar zomertijd. De tool vangt fouten van het CRM netjes op en blijft binnen de API-limieten. De beheerlinks gebruiken lange willekeurige codes en er is rate limiting. Voor de livegang zijn er geautomatiseerde tests en security-reviews gedaan.
+
+## Het resultaat
+
+Klanten boeken zelf, op elk moment van de dag, en zien direct de beschikbaarheid en de prijs. Aanvragen komen compleet binnen. Bevestigen is één klik, inclusief de mail en het betaalverzoek. Er zijn minder telefoontjes en mails over wijzigingen.
+
+## Mijn rol
+
+Ik heb het concept, de UX en het interactieontwerp gedaan en meerdere varianten getest. Ik heb de front-end gebouwd, de serverless back-end, de koppeling met het CRM en de back-office-flow.

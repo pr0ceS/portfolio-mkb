@@ -1,0 +1,33 @@
+---
+title: "Datakwaliteit in het CRM hersteld"
+description: "Matching-pipeline die de status van ongeveer 1.135 kantoorruimtes in het CRM controleerde en de oorzaak van de fouten wegnam."
+date: "2026-05-01"
+published: true
+tags: ["Python", "pandas", "rapidfuzz", "openpyxl", "Zoho CRM API", "COQL", "Deluge"]
+locale: "nl"
+category: "ai"
+status: "Afgerond"
+role: "Analyse, pipeline en aanpassingen in het CRM"
+---
+
+## Het probleem
+
+Mijn werkgever, een verhuurder van kantoorruimte, houdt van elke ruimte de status bij in het CRM: beschikbaar, in optie of verhuurd. Die status klopte niet meer.
+
+De oorzaak was automatiseringen die elkaar overschreven. Eén functie zette bij elke wijziging van een deal de huurder van een ruimte opnieuw. Daardoor leken huurders van de ene naar de andere ruimte te verschuiven.
+
+## De aanpak
+
+Ik heb een pipeline in Python geschreven die de ruimtes in het CRM vergeleek met twee andere bronnen. De eerste was de live plattegronddata, de echte bron van waarheid. De tweede was de opzeggingsformulieren.
+
+Namen worden zelden twee keer hetzelfde geschreven. Daarom gebruikte ik fuzzy matching met rapidfuzz. Dat is een manier om teksten te koppelen die bijna, maar niet precies, gelijk zijn.
+
+Sommige dingen kan een script niet raden, zoals verschillende schrijfwijzen van dezelfde bedrijfsnaam of huurders die binnen een gebouw zijn verhuisd. Die bedrijfskennis heb ik vastgelegd als expliciete regels.
+
+Daarna heb ik de twee foutieve Deluge-functies in het CRM herschreven. Ze overschrijven een verhuurde ruimte niet meer.
+
+## Het resultaat
+
+Ongeveer 1.135 ruimtes zijn ingedeeld in vier groepen: automatisch corrigeren, handmatig bevestigd, controleren en klopt al. Het team kreeg dit als een overzichtelijk Excel-werkboek.
+
+De bron van de vervuiling is gedicht, dus het probleem komt niet terug.
