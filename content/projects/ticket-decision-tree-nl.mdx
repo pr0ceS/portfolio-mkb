@@ -10,12 +10,22 @@ category: "automation"
 
 ## Het probleem
 
-Medewerkers op locatie moesten zelf een categoriekaart interpreteren om tickets aan te maken. Gevolg: verkeerde categorieën en ontbrekende gegevens.
+Medewerkers op locatie maken tickets aan voor alles wat in een gebouw aandacht nodig heeft. Om de juiste categorie te kiezen moesten ze een categoriekaart lezen en zelf interpreteren. Het gevolg: verkeerde categorieën en ontbrekende gegevens.
 
 ## De aanpak
 
-Ik heb in Zoho Desk een beslisboom gebouwd die vragen stelt en het ticket compleet aanmaakt via de API. De opzet is gebaseerd op een analyse van 2.251 echte tickets. Het platform kan geen tekst splitsen of rekenen, dat heb ik opgelost met API-patronen.
+### Vragen in plaats van een kaart
 
-## Het resultaat
+Een beslisboom in Zoho Desk, gebouwd met Guided Conversations, stelt de vragen. Elk antwoord bepaalt de volgende vraag. Aan het eind maakt de boom het complete ticket aan via de API, met de juiste categorie en alle gegevens die bij die categorie horen.
 
-De categorie Administratie is volledig gebouwd en getest, inclusief automatische berekeningen. De volgende categorie is ontworpen.
+### Gebaseerd op echte tickets
+
+De opzet volgt uit een analyse van 2.251 echte tickets. De categorieën en vragen volgen daardoor wat medewerkers echt melden, in plaats van wat een kaart aanneemt.
+
+### Rekenen binnen het gesprek
+
+Sommige tickets hebben een berekende waarde nodig, en sommige antwoorden moeten over aparte velden worden verdeeld. Guided Conversations kan geen van beide. Dat gebeurt met API-aanroepen vanuit de boom, zodat de medewerker niets van die beperking merkt en het ticket binnenkomt met de berekening al gedaan.
+
+### Toegang via OAuth
+
+De boom praat met de API van Zoho Desk via OAuth, en heeft daardoor alleen de rechten die nodig zijn om tickets aan te maken.

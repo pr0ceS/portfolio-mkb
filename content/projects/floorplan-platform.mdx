@@ -7,7 +7,6 @@ tags: ["Next.js", "React", "TypeScript", "Vercel AI SDK", "OpenRouter", "Fabric.
 locale: "en"
 category: "featured"
 status: "Live in production"
-role: "Sole developer, from idea to production"
 ---
 
 ## The problem
@@ -18,11 +17,11 @@ The square metres are the basis of the rent. They lived in drawings, in spreadsh
 
 ## The approach
 
-I built the platform on my own, from the first idea to production. It works in six stages.
+The platform works in six stages.
 
 ### Importing the PDF
 
-The PDF is turned into a vector drawing inside the browser, using WebAssembly. You calibrate the scale once. After that the app finds walls and rooms by itself. I used classic geometry for this and no AI: a distance transform followed by watershed, a technique that fills the drawing like water and stops at narrow points. A doorway is such a narrow point, so it becomes a room boundary without any extra rule. Room numbers and names are read from the text in the PDF.
+The PDF is turned into a vector drawing inside the browser, using WebAssembly. You calibrate the scale once. After that the app finds walls and rooms by itself. This uses classic geometry and no AI: a distance transform followed by watershed, a technique that fills the drawing like water and stops at narrow points. A doorway is such a narrow point, so it becomes a room boundary without any extra rule. Room numbers and names are read from the text in the PDF.
 
 ### Drawing
 
@@ -34,7 +33,7 @@ This is a chat panel where you type what you want, for example a phone room of 2
 
 ### Furnishing
 
-There is a furniture library and a collision engine I wrote myself. It also checks walking space against NEN 1824, the Dutch standard for workplace dimensions.
+There is a furniture library and a collision engine written for this app. It also checks walking space against NEN 1824, the Dutch standard for workplace dimensions.
 
 ### CRM link
 
@@ -52,7 +51,7 @@ The guarantees are in code, not in the prompt. Existing furniture is protected. 
 
 The agent sees the drawing through an annotated image with a chessboard grid. It reasons about each room in that room's own coordinate system, which matters in buildings that stand at an angle.
 
-I measured the cost instead of guessing. Logging per request showed that about 99% of the cost came from context that was sent again and again. I fixed that with a floor plan memory that only sends the plan when it has changed, by trimming old read results, with a prompt that can be cached and by bundling actions.
+The cost was measured instead of guessed. Logging per request showed that about 99% of the cost came from context that was sent again and again. That was fixed with a floor plan memory that only sends the plan when it has changed, by trimming old read results, with a prompt that can be cached and by bundling actions.
 
 The platform does not depend on one AI model, because all calls go through OpenRouter. AI vision recognises sanitary fittings inside a box you draw. Its answer is treated as untrusted input and validated before use.
 
@@ -70,8 +69,8 @@ The platform is live in production. Layouts are now made in-house instead of by 
 - Square metres are deterministic across 4,284 permutations, guarded by a regression test over 655 real rooms
 - Moving the map from SVG to canvas took the style work per pinch on mobile from about 1 second to 0 ms
 
-## My role
+## How it was built
 
-I did all of it: collecting the requirements, design and architecture, building the app, the AI layer and the integrations, and testing on real drawings. I also gave the demo and wrote a 32-page manual and a knowledge base.
+The platform was built with Claude Code as a pair programmer. The architecture and the specifications were written out first, and everything was verified with tests and measurements on real drawings.
 
-I built it with Claude Code as a pair programmer. I decided the architecture, wrote the specs and verified everything with tests and measurements.
+It comes with a 32-page manual and a knowledge base.

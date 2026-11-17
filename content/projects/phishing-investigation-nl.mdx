@@ -1,6 +1,6 @@
 ---
-title: "Security-onderzoek naar phishingberichten"
-description: "Uitzoeken waarom gasten kort na een online hotelboeking een phishinglink ontvingen."
+title: "Security-onderzoek naar een datalek"
+description: "Loganalyse om te vinden waar klantgegevens weglekten, en de maatregelen om het lek te dichten."
 date: "2026-02-15"
 published: true
 tags: ["Log analysis","WordPress security","Incident response"]
@@ -10,12 +10,22 @@ category: "ai"
 
 ## Het probleem
 
-Gasten die via de website een hotelkamer boekten, kregen kort daarna een WhatsApp of sms met een phishinglink. Niemand wist waarom.
+Klantgegevens van een website kwamen terecht buiten de systemen waar ze thuishoren. Die gegevens gaan door meerdere systemen, en het was onduidelijk welk daarvan lekte.
 
 ## De aanpak
 
-Ik heb de firewall- en applicatielogs geanalyseerd. Een kwetsbare WordPress-plugin (Gravity SMTP, CVE-2026-4020) werd op meerdere sites afgetast, en er waren pogingen op een verdacht PHP-bestand in de uploads-map. Ik heb een testplan opgezet met kanarie-boekingen om het lek per systeem te isoleren.
+### De logs lezen
 
-## Het resultaat
+De firewall- en applicatielogs waren het vertrekpunt. Daaruit bleek dat een kwetsbare WordPress-plugin op meerdere sites actief werd afgetast. Er waren ook pogingen om een verdacht PHP-bestand in de uploads-map te bereiken, een plek waar vaak een backdoor wordt neergezet.
 
-Concrete aanwijzingen, een plan van aanpak (updaten, API-sleutels roteren, backdoor-controle) en een methode om het lek te bewijzen.
+### Het lek isoleren met kanarie-records
+
+Elk systeem waar de gegevens doorheen gaan, kan het lek zijn. Het testplan gebruikt kanarie-records: testinvoer met contactgegevens die per systeem uniek zijn. Wordt een van die gegevens misbruikt, dan is duidelijk uit welk systeem de gegevens kwamen.
+
+## De maatregelen
+
+- De kwetsbare plugin op elke site bijwerken.
+- De API-sleutels vervangen, zodat sleutels die mogelijk zijn gelekt niet meer werken.
+- De sites controleren op backdoors.
+
+De kanarie-records dienen ook als controle achteraf: zolang geen ervan wordt misbruikt, is het lek dicht.

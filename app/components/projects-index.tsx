@@ -8,7 +8,7 @@ export function ProjectsIndex({ projects }: { projects: ProjectSummary[] }) {
   const { language } = useLanguage();
   const nl = language === "nl";
   const local = projects.filter(project => project.locale === language);
-  const featured = local.filter(project => featuredSlugs.includes(baseSlug(project.slug)));
+  const featured = projects.filter(project => featuredSlugs.includes(baseSlug(project.slug)));
   const rest = local.filter(project => !featuredSlugs.includes(baseSlug(project.slug)));
   return <main id="main-content">
     <div className="section page-section projects-head"><header className="page-heading"><h1>{nl ? "Projecten" : "Projects"}</h1><p>{nl ? "AI-agents, webapplicaties, koppelingen en automatisering. Bovenaan het werk dat live staat, daaronder alles per onderwerp." : "AI agents, web applications, integrations and automation. Work that is live comes first, everything else is listed by subject."}</p></header></div>

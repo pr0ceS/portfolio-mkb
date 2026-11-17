@@ -7,27 +7,41 @@ tags: ["Python", "pandas", "rapidfuzz", "openpyxl", "Zoho CRM API", "COQL", "Del
 locale: "en"
 category: "ai"
 status: "Completed"
-role: "Analysis, pipeline and CRM fixes"
 ---
 
 ## The problem
 
-My employer, a company that rents out office space, keeps the status of every room in the CRM: available, under option or rented. That status was no longer correct.
+My employer, a company that rents out office space, keeps the status of every room in the CRM: available, under option or rented. Sales relies on that status to know what can be offered. It was no longer correct.
 
-The cause was automations that overwrote each other. One function set the tenant of a room again on every change to a deal. As a result, tenants seemed to move from one room to another.
+The cause was automations that overwrote each other. One function set the tenant of a room again on every change to a deal. As a result, tenants seemed to move from one room to another, and nobody could tell which records were still right.
 
 ## The approach
 
-I wrote a pipeline in Python that compared the rooms in the CRM with two other sources. The first was the live floor plan data, which is the real source of truth. The second was the cancellation forms.
+### Comparing three sources
 
-Names are rarely written the same way twice, so I used fuzzy matching with rapidfuzz. That is a way to match texts that are almost, but not exactly, the same.
+A Python pipeline compared every room in the CRM with two other sources. The first was the live floor plan data, which is the real source of truth for which rooms exist and who is in them. The second was the cancellation forms, which show who has left.
 
-Some things a script cannot guess, such as different spellings of the same company name or tenants who moved within a building. I wrote that business knowledge down as explicit rules.
+### Matching names that are almost the same
 
-After that I rewrote the two faulty Deluge functions in the CRM. They no longer overwrite a room that is rented.
+Company names are rarely written the same way twice. The pipeline uses fuzzy matching with rapidfuzz, a way to match texts that are almost, but not exactly, the same.
+
+### Business knowledge as explicit rules
+
+Some things a script cannot guess, such as different spellings of the same company name, or tenants who moved within a building. That knowledge is written down as explicit rules in the pipeline. Anyone can read why a room ended up in a certain group.
+
+### Fixing the cause
+
+Cleaning the data once would not have been enough, because the same automations would have damaged it again. The two faulty Deluge functions in the CRM were rewritten, so they no longer overwrite a room that is rented.
 
 ## The result
 
-About 1,135 rooms were sorted into four groups: correct automatically, confirmed by hand, needs checking and already correct. The team got this as a clear Excel workbook.
+About 1,135 rooms were sorted into four groups:
+
+- correct automatically
+- confirmed by hand
+- needs checking
+- already correct
+
+The team received this as a clear Excel workbook.
 
 The source of the bad data is closed, so the problem does not come back.

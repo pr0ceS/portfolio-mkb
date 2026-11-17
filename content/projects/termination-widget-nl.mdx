@@ -10,12 +10,22 @@ category: "automation"
 
 ## Het probleem
 
-Bij opzeggingen moesten medewerkers zelf uitrekenen wanneer een huurder eruit mocht, met opzegtermijnen, verlengperiodes en lopende verlengingen. Dat ging vaak mis.
+Als een huurder opzegt, moet iemand uitrekenen per welke datum de huurder eruit mag. Dat hangt af van de opzegtermijn, de verlengperiode en of er al een verlenging loopt. Medewerkers deden die berekening met de hand, en dat ging vaak mis.
 
 ## De aanpak
 
-Een opzegging starten werd een stap in het CRM-proces, met een eigen widget gehost op Cloudflare. De regels zitten in de widget: alleen per de eerste van de maand, de opzegtermijn moet gerespecteerd zijn, en een verlenging die nog niet is ingegaan mag worden onderbroken. Uitzonderingen vragen een verplichte reden. Getest met uitgebreide scenario's, ook voor extreme contracten.
+Een opzegging starten is een vaste stap in het CRM-proces geworden. In die stap opent een widget, gebouwd met de Zoho CRM Widgets SDK en gehost op Cloudflare. Die accepteert alleen datums die voor dat contract geldig zijn.
+
+De regels zitten in de widget in plaats van in hoofden:
+
+- Een opzegging gaat alleen in per de eerste van een maand.
+- De opzegtermijn moet gerespecteerd worden.
+- Een verlenging die nog niet is ingegaan, mag nog worden onderbroken.
+
+Soms is er een goede reden om af te wijken. Dat blijft mogelijk, maar alleen met een verplichte, geschreven reden, zodat achteraf altijd duidelijk is waarom er een uitzondering is gemaakt.
+
+De widget is getest met een brede set scenario's, ook met contracten met extreme voorwaarden.
 
 ## Het resultaat
 
-Foute opzegdatums kunnen niet meer worden ingevoerd en elke uitzondering is verantwoord.
+Foute opzegdatums kunnen niet meer worden ingevoerd, en elke uitzondering is verantwoord.

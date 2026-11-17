@@ -7,27 +7,41 @@ tags: ["Python", "pandas", "rapidfuzz", "openpyxl", "Zoho CRM API", "COQL", "Del
 locale: "nl"
 category: "ai"
 status: "Afgerond"
-role: "Analyse, pipeline en aanpassingen in het CRM"
 ---
 
 ## Het probleem
 
-Mijn werkgever, een verhuurder van kantoorruimte, houdt van elke ruimte de status bij in het CRM: beschikbaar, in optie of verhuurd. Die status klopte niet meer.
+Mijn werkgever, een verhuurder van kantoorruimte, houdt de status van elke ruimte bij in het CRM: beschikbaar, in optie of verhuurd. Sales vertrouwt op die status om te weten wat er aangeboden kan worden. Die klopte niet meer.
 
-De oorzaak was automatiseringen die elkaar overschreven. Eén functie zette bij elke wijziging van een deal de huurder van een ruimte opnieuw. Daardoor leken huurders van de ene naar de andere ruimte te verschuiven.
+De oorzaak was automatiseringen die elkaar overschreven. Eén functie zette bij elke wijziging van een deal de huurder van een ruimte opnieuw. Daardoor leken huurders van de ene ruimte naar de andere te verschuiven, en wist niemand meer welke gegevens nog klopten.
 
 ## De aanpak
 
-Ik heb een pipeline in Python geschreven die de ruimtes in het CRM vergeleek met twee andere bronnen. De eerste was de live plattegronddata, de echte bron van waarheid. De tweede was de opzeggingsformulieren.
+### Drie bronnen vergelijken
 
-Namen worden zelden twee keer hetzelfde geschreven. Daarom gebruikte ik fuzzy matching met rapidfuzz. Dat is een manier om teksten te koppelen die bijna, maar niet precies, gelijk zijn.
+Een pipeline in Python vergeleek elke ruimte in het CRM met twee andere bronnen. De eerste was de live plattegronddata, de echte bron van waarheid voor welke ruimtes er zijn en wie erin zit. De tweede was de opzeggingsformulieren, waaruit blijkt wie vertrokken is.
 
-Sommige dingen kan een script niet raden, zoals verschillende schrijfwijzen van dezelfde bedrijfsnaam of huurders die binnen een gebouw zijn verhuisd. Die bedrijfskennis heb ik vastgelegd als expliciete regels.
+### Namen die bijna hetzelfde zijn
 
-Daarna heb ik de twee foutieve Deluge-functies in het CRM herschreven. Ze overschrijven een verhuurde ruimte niet meer.
+Bedrijfsnamen worden zelden twee keer hetzelfde geschreven. De pipeline gebruikt fuzzy matching met rapidfuzz, een manier om teksten te koppelen die bijna, maar niet precies, hetzelfde zijn.
+
+### Bedrijfskennis als expliciete regels
+
+Sommige dingen kan een script niet raden, zoals verschillende schrijfwijzen van dezelfde bedrijfsnaam, of huurders die binnen een gebouw zijn verhuisd. Die kennis staat als expliciete regels in de pipeline. Iedereen kan teruglezen waarom een ruimte in een bepaalde groep terechtkwam.
+
+### De oorzaak wegnemen
+
+De data één keer opschonen was niet genoeg geweest, want dezelfde automatiseringen hadden haar opnieuw beschadigd. De twee foutieve Deluge-functies in het CRM zijn herschreven, zodat ze een verhuurde ruimte niet meer overschrijven.
 
 ## Het resultaat
 
-Ongeveer 1.135 ruimtes zijn ingedeeld in vier groepen: automatisch corrigeren, handmatig bevestigd, controleren en klopt al. Het team kreeg dit als een overzichtelijk Excel-werkboek.
+Ongeveer 1.135 ruimtes zijn ingedeeld in vier groepen:
+
+- automatisch corrigeren
+- handmatig bevestigd
+- controleren
+- klopte al
+
+Het team kreeg dit als een overzichtelijk Excel-werkboek.
 
 De bron van de vervuiling is gedicht, dus het probleem komt niet terug.

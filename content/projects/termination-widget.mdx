@@ -10,11 +10,21 @@ category: "automation"
 
 ## The problem
 
-For a termination, staff had to work out by hand when a tenant was allowed to leave, with notice periods, renewal periods and running renewals. That often went wrong.
+When a tenant terminates a lease, someone has to work out the date on which the tenant is allowed to leave. That depends on the notice period, the renewal period and whether a renewal is already running. Staff did this calculation by hand, and it often went wrong.
 
 ## The approach
 
-Starting a termination became a step in the CRM process, with my own widget hosted on Cloudflare. The rules are in the widget: only per the first of the month, the notice period must be respected, and a renewal that has not started yet may be interrupted. Exceptions need a mandatory reason. I tested it with a wide set of scenarios, including extreme contracts.
+Starting a termination became a fixed step in the CRM process. In that step a widget opens, built with the Zoho CRM Widgets SDK and hosted on Cloudflare. It only accepts dates that are valid for that contract.
+
+The rules are in the widget instead of in people's heads:
+
+- A termination only takes effect on the first of a month.
+- The notice period has to be respected.
+- A renewal that has not started yet may still be interrupted.
+
+Sometimes there is a good reason to deviate. That stays possible, but only with a mandatory written reason, so it is always clear afterwards why an exception was made.
+
+The widget was tested with a wide set of scenarios, including contracts with extreme terms.
 
 ## The result
 

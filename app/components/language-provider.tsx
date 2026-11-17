@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 export type Language = "en" | "nl";
 export type ExperienceItem = { year: string; title: string; company?: string; description: string };
 export type Principle = { title: string; text: string };
-const translations = {
+export const translations = {
   en: {
     nav_about: "About", nav_projects: "Projects", nav_contact: "Contact", nav_programming: "Programming", nav_ecommerce: "E-commerce",
     section_experience: "Experience", section_principles: "How I work", section_about: "About me",
@@ -24,7 +24,7 @@ const translations = {
     ],
     experience: [
       { year: "Feb 2026 – Present", title: "Software Developer", company: "MyOffice (MyGroup), part-time, sole developer", description: "Built a floor plan platform from idea to production. It turns architect PDFs into editable drawings with exact square metres, linked to the CRM, and has its own AI agent that builds and furnishes rooms. Also built an online booking tool for meeting rooms, repaired the data of more than 1,100 rooms and connected the CRM to accounting and external partners." },
-      { year: "2022 – Present", title: "Founder & Lead Developer", company: "MKB Trading", description: "Designed and built Aiders, an AI agent that handles customer service emails for Shopify stores, live in the Shopify App Store. Built and scaled international webshops in Denmark, Germany and the UK, and my own tool to automate Meta ads." },
+      { year: "2022 – Present", title: "Founder & Lead Developer", company: "MKB Trading", description: "Designed and built Aiders, an AI agent that handles customer service emails for Shopify stores, live in the Shopify App Store. Built and scaled webshops that are now active in 12 countries, and my own tool to automate Meta ads." },
       { year: "2020 – 2022", title: "Freelance Developer", description: "Moved legacy PHP to Python and Node.js, and managed Linux servers." }
     ]
   },
@@ -47,7 +47,7 @@ const translations = {
     ],
     experience: [
       { year: "Feb 2026 – Heden", title: "Software Developer", company: "MyOffice (MyGroup), parttime, enige developer", description: "Van idee tot productie een plattegrondplatform gebouwd. Het zet architecten-PDF's om in bewerkbare tekeningen met exacte vierkante meters, gekoppeld aan het CRM, en heeft een eigen AI-agent die ruimtes bouwt en inricht. Daarnaast een online boekingstool voor vergaderruimtes gebouwd, de data van ruim 1.100 ruimtes hersteld en het CRM gekoppeld aan de boekhouding en externe partners." },
-      { year: "2022 – Heden", title: "Oprichter & Lead Developer", company: "MKB Trading", description: "Aiders ontworpen en gebouwd, een AI-agent die klantenservice-e-mails voor Shopify-webshops afhandelt, live in de Shopify App Store. Internationale webshops gebouwd en opgeschaald in Denemarken, Duitsland en het VK, en een eigen tool om Meta-advertenties te automatiseren." },
+      { year: "2022 – Heden", title: "Oprichter & Lead Developer", company: "MKB Trading", description: "Aiders ontworpen en gebouwd, een AI-agent die klantenservice-e-mails voor Shopify-webshops afhandelt, live in de Shopify App Store. Webshops gebouwd en opgeschaald die nu in 12 landen actief zijn, en een eigen tool om Meta-advertenties te automatiseren." },
       { year: "2020 – 2022", title: "Freelance Developer", description: "Legacy PHP omgezet naar Python en Node.js, en Linux-servers beheerd." }
     ]
   }
@@ -74,6 +74,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const current = translations[language];
   function t(key: string) { const value = current[key as keyof typeof current]; return typeof value === "string" ? value : key; }
   return <LanguageContext.Provider value={{ language, setLanguage, t, skillGroups: current.skillGroups, principles: current.principles, experience: current.experience }}>{children}</LanguageContext.Provider>;
+}
+// Text that is on screen before the page becomes interactive. Both languages are in the HTML and CSS shows the one
+// that matches <html lang>, which a script in the layout sets before the first paint. Without this a Dutch visitor
+// first sees the English text, and the layout shifts when it is swapped.
+export function T({ en, nl }: { en: string; nl: string }) {
+  return <><span data-lang="en" lang="en">{en}</span><span data-lang="nl" lang="nl">{nl}</span></>;
 }
 export function useLanguage() {
   const context = useContext(LanguageContext);

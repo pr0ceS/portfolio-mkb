@@ -10,12 +10,20 @@ category: "ai"
 
 ## Het probleem
 
-Het verhuurproces loopt van lead naar bezichtiging, voorstel, overeenkomst en facturatie, in een CRM-workflow zonder AI. De vraag was waar de wachttijd zit en welke stappen AI kan versnellen.
+Het verhuren van een kantoor volgt een vast proces: lead, bezichtiging, voorstel, overeenkomst en facturatie. Dat loopt als workflow in het CRM, zonder AI. De vraag was waar de wachttijd zit, en welke stappen AI kan versnellen.
+
+Dat uitproberen in het live CRM is riskant. Een verkeerd veld of een verkeerde mail komt daar bij een echte klant terecht.
 
 ## De aanpak
 
-Ik heb de workflow één op één nagebouwd als state machine in React en TypeScript, inclusief verplichte velden en rollen. Elke fase kreeg een AI-assistlaag. De regel: de AI stelt voor, de state machine beslist. De AI vult velden in of schrijft een conceptmail, een mens keurt goed.
+### De workflow als state machine
+
+De workflow is één op één nagebouwd als state machine in React en TypeScript. Een state machine is een model waarin een deal altijd in precies één fase zit, en pas naar de volgende fase kan als aan de voorwaarden voor die stap is voldaan. Die voorwaarden, guards genoemd, zijn dezelfde als in het CRM: verplichte velden en de rol van degene die de stap zet.
+
+### Een AI-laag per fase
+
+Elke fase kreeg een AI-assist-laag. De AI kan velden invullen of een concept-mail schrijven. Het principe is dat de AI voorstelt en de state machine beslist. Een voorstel dat een guard schendt wordt geweigerd, en een mens keurt alles goed voordat het telt.
 
 ## Het resultaat
 
-Een interactief prototype om AI-toepassingen veilig te testen naast het live CRM.
+Een werkend, interactief prototype waarin AI-toepassingen veilig geprobeerd kunnen worden naast het live CRM. Dat heet shadow mode: de AI loopt mee met het echte proces, en zijn suggesties kunnen worden vergeleken met wat mensen deden, zonder dat er voor klanten iets verandert.

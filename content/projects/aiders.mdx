@@ -8,7 +8,6 @@ tags: ["Python", "LangGraph", "RAG", "Qdrant", "FastAPI", "Celery", "Redis", "Su
 locale: "en"
 category: "featured"
 status: "Live in the Shopify App Store"
-role: "Designed and built it, from architecture to app store review"
 ---
 
 ## The problem
@@ -17,22 +16,30 @@ Webshops get a lot of "where is my order" emails. This is worst for dropshippers
 
 Slow answers lead to angry customers and bad reviews. They also lead to chargebacks, where a customer asks the bank for the money back. With enough chargebacks a shop can lose its payment provider, and then it cannot sell at all.
 
-I ran into this with my own webshops. That is why I built Aiders.
+Aiders grew out of exactly this situation at my own webshops, where answering these emails took more time than anything else.
 
 ## The approach
 
 Aiders is a SaaS product that reads incoming customer service emails and answers them by itself, in the language of the customer.
 
-The core is a multi-agent system written in Python with LangGraph. I set it up as a swarm, which means several specialised agents hand a conversation over to each other instead of one agent trying to do everything.
+### Several agents instead of one
 
-The answers have to be true. For that I use RAG, short for retrieval-augmented generation: before the agent writes, it looks up the relevant shop and order data and bases its answer on that. The data is stored in Qdrant, a vector database. This keeps the agent from making things up.
+The core is a multi-agent system written in Python with LangGraph. It is set up as a swarm: several specialised agents hand a conversation over to each other, instead of one agent trying to do everything. Each agent has a smaller job, which makes its answers easier to check and to improve.
 
-Emails are handled in the background. Celery workers and Redis take care of that, so a busy inbox does not slow anything down. The API is written in Python with FastAPI. Supabase provides the PostgreSQL database and the login. Everything runs in Docker containers on Fly.io.
+### Answers based on real data
 
-Merchants get a dashboard built with Next.js. There is also an affiliate and partner system.
+An answer about an order has to be true. Before an agent writes, it looks up the relevant shop and order data and bases its answer on that. This is called RAG, short for retrieval-augmented generation. The data is stored in Qdrant, a vector database, which finds texts by meaning instead of by exact words. This keeps the agent from making things up.
+
+### Built for a busy inbox
+
+Emails are handled in the background by Celery workers, with Redis as the queue. A full inbox therefore does not slow down the rest of the app. The API is written in Python with FastAPI. Supabase provides the PostgreSQL database and the login. Everything runs in Docker containers on Fly.io.
+
+### For the merchant
+
+Merchants manage everything from a dashboard built with Next.js. There is also an affiliate and partner system, for people who bring in new shops.
 
 ## The result
 
-Aiders passed the Shopify review and is live in the Shopify App Store.
+Aiders passed the Shopify review and is live in the Shopify App Store. Any Shopify merchant can install it from there.
 
-The project covers the full path of an AI agent: the architecture, the build, running it in production and getting it through an app store review.
+The project covers the whole path of an AI agent: the architecture, the build, running it in production and getting it through an app store review.

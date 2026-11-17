@@ -10,12 +10,20 @@ category: "ai"
 
 ## The problem
 
-The rental process runs from lead to viewing, proposal, agreement and invoicing, in a CRM workflow without AI. The question was where the waiting time is and which steps AI could speed up.
+Renting out an office follows a fixed process: lead, viewing, proposal, agreement and invoicing. It runs as a workflow in the CRM, without AI. The question was where the waiting time is, and which steps AI could speed up.
+
+Trying that out in the live CRM is risky. A wrong field or a wrong email there reaches a real customer.
 
 ## The approach
 
-I rebuilt the workflow one to one as a state machine in React and TypeScript, including required fields and roles. Each phase got an AI assist layer. The rule: the AI proposes, the state machine decides. The AI fills in fields or drafts an email, a person approves.
+### The workflow as a state machine
+
+The workflow was rebuilt one to one as a state machine in React and TypeScript. A state machine is a model in which a deal is always in exactly one phase, and can only move to the next phase when the conditions for that step are met. Those conditions, called guards, are the same as in the CRM: required fields and the role of the person taking the step.
+
+### An AI layer per phase
+
+Each phase got an AI assist layer. The AI can fill in fields or draft an email. The principle is that the AI proposes and the state machine decides. A proposal that breaks a guard is refused, and a person approves everything before it counts.
 
 ## The result
 
-An interactive prototype to try AI features safely next to the live CRM.
+A working, interactive prototype in which AI features can be tried safely next to the live CRM. This is known as shadow mode: the AI runs along with the real process, and its suggestions can be compared with what people did, without anything changing for customers.

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { useLanguage } from "./language-provider";
+import { T } from "./language-provider";
 import { NameMark } from "./name-mark";
 
 // A horizon under the name: one coloured arc, with fine light rays above it that fade out.
@@ -20,16 +20,14 @@ function HeroArc() {
 }
 
 export function Hero() {
-  const { language } = useLanguage();
-  const nl = language === "nl";
   return <section className="hero-shell" aria-labelledby="hero-name">
     <div className="hero-content">
       <div className="portrait-round"><Image src="/images/mehmet-boz-460.webp" alt="" width={230} height={230} priority unoptimized /></div>
       <h1 id="hero-name" className="sr-only">Mehmet Boz</h1>
       <NameMark />
       <p className="hero-role">AI Software Engineer</p>
-      <p className="hero-intro">{nl ? "Ik ontwerp en bouw AI-applicaties en AI-agents," : "I design and build AI applications and agents,"}{" "}<br />{nl ? "van het eerste idee tot productie." : "from the first idea to production."}</p>
-      <div className="hero-actions"><a className="button" href="#work">{nl ? "Bekijk mijn werk" : "See my work"}<ArrowDown size={20} /></a><a className="text-link" href="#contact">{nl ? "Neem contact op" : "Get in touch"}<ArrowUpRight size={20} /></a></div>
+      <p className="hero-intro"><T en="I design and build AI applications and agents," nl="Ik ontwerp en bouw AI-applicaties en AI-agents," />{" "}<br /><T en="from the first idea to production." nl="van het eerste idee tot productie." /></p>
+      <div className="hero-actions"><a className="button" href="#work"><T en="See my work" nl="Bekijk mijn werk" /><ArrowDown size={20} /></a><a className="text-link" href="#contact"><T en="Get in touch" nl="Neem contact op" /><ArrowUpRight size={20} /></a></div>
     </div>
     <div className="hero-dome" aria-hidden="true" />
     <HeroArc />

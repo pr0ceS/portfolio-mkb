@@ -81,9 +81,9 @@ svg { flex-shrink: 0; }
 .hero-content { position: relative; z-index: 1; max-width: 1240px; margin: auto; padding: 72px 40px 40px; text-align: center; }
 .portrait-round { width: 104px; height: 104px; border-radius: 50%; overflow: hidden; margin: 0 auto 30px; animation: portrait-in 1s ease both; }
 .portrait-round img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
-.hero-role { font-size: clamp(23px, 2.6vw, 30px); font-weight: 600; letter-spacing: -.025em; line-height: 1.3; animation: intro-in .85s 1.25s both; }
-.hero-intro { font-size: 21px; color: var(--muted); margin: 14px auto 0; line-height: 1.55; animation: intro-in .85s 1.4s both; }
-.hero-actions { display: flex; justify-content: center; align-items: center; gap: 28px; margin-top: 36px; animation: intro-in .85s 1.55s both; }
+.hero-role { font-size: clamp(23px, 2.6vw, 30px); font-weight: 600; letter-spacing: -.025em; line-height: 1.3; animation: intro-in .85s calc(1.25s * var(--k, 1)) both; }
+.hero-intro { font-size: 21px; color: var(--muted); margin: 14px auto 0; line-height: 1.55; animation: intro-in .85s calc(1.4s * var(--k, 1)) both; }
+.hero-actions { display: flex; justify-content: center; align-items: center; gap: 28px; margin-top: 36px; animation: intro-in .85s calc(1.55s * var(--k, 1)) both; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; padding: 0 20px; background: #fff; color: #111113; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; font-weight: 500; line-height: 1.3; white-space: nowrap; transition: background .2s, border-color .2s; }
 .dark .button { border-color: transparent; }
 .button svg { width: 17px; height: 17px; flex-shrink: 0; }
@@ -139,9 +139,6 @@ svg { flex-shrink: 0; }
 .contact-email:hover { color: var(--ink); }
 .footer-bottom { max-width: 1160px; margin: auto; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px 0 14px; font-size: 17px; }
 .footer-bottom > a:last-child { display: inline-flex; gap: 10px; align-items: center; min-height: 44px; }
-.footer-more { max-width: 1160px; margin: auto; display: flex; gap: 24px; padding: 0 0 24px; font-size: 16px; color: var(--muted); }
-.footer-more a { padding: 5px 0; }
-.footer-more a:hover { color: var(--ink); }
 .page-section { padding-top: 64px; padding-bottom: 100px; }
 .page-heading { margin-bottom: 64px; max-width: 860px; }
 .page-heading h1 { font-size: clamp(46px, 6.4vw, 76px); line-height: 1.06; letter-spacing: -.04em; font-weight: 600; }
@@ -184,8 +181,8 @@ svg { flex-shrink: 0; }
 .project-body .mdx pre code { background: transparent; color: #f5f5f7; }
 /* Name intro: each letter's outline is drawn, then the fill rises behind it. */
 .name-mark { display: block; width: 100%; max-width: 820px; margin: 0 auto 30px; overflow: visible; }
-.name-letter-fill { fill: var(--ink); clip-path: inset(100% -4% -4% -4%); animation: name-rise .9s cubic-bezier(.25,.7,.2,1) calc(.62s + var(--i) * 75ms) forwards; }
-.name-letter-line { fill: none; stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: name-draw 1.2s cubic-bezier(.6,0,.3,1) calc(.15s + var(--i) * 75ms) forwards, name-line-out .6s ease calc(1.5s + var(--i) * 75ms) forwards; }
+.name-letter-fill { fill: var(--ink); clip-path: inset(100% -4% -4% -4%); animation: name-rise calc(.9s * var(--k, 1)) cubic-bezier(.25,.7,.2,1) calc((.62s + var(--i) * 75ms) * var(--k, 1)) forwards; }
+.name-letter-line { fill: none; stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: name-draw calc(1.2s * var(--k, 1)) cubic-bezier(.6,0,.3,1) calc((.15s + var(--i) * 75ms) * var(--k, 1)) forwards, name-line-out calc(.6s * var(--k, 1)) ease calc((1.5s + var(--i) * 75ms) * var(--k, 1)) forwards; }
 @keyframes name-draw { to { stroke-dashoffset: 0; } }
 @keyframes name-line-out { to { stroke-opacity: 0; } }
 @keyframes name-rise { to { clip-path: inset(-4%); } }
@@ -305,10 +302,11 @@ body::before { content: ""; position: fixed; top: 0; bottom: 0; left: 50%; width
 .band-head > .text-link, .band-head > .button { flex-shrink: 0; }
 .traits { display: flex; flex-wrap: wrap; gap: 12px; padding: 0 40px 76px; list-style: none; margin: 0; }
 .traits li { display: inline-flex; align-items: center; gap: 12px; padding: 7px 22px 7px 7px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: 18px; font-weight: 500; letter-spacing: -.01em; line-height: 1.3; }
-.traits li span { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: color-mix(in srgb, var(--tone) 16%, transparent); color: var(--tone); flex-shrink: 0; }
-@media (max-width: 700px) { .traits { padding: 0 22px 52px; gap: 8px; }.traits li { gap: 8px; padding: 5px 14px 5px 5px; font-size: 16px; }.traits li span { width: 30px; height: 30px; }.traits li svg { width: 16px; height: 16px; } }
+.traits li > span:first-child { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: color-mix(in srgb, var(--tone) 16%, transparent); color: var(--tone); flex-shrink: 0; }
+@media (max-width: 700px) { .traits { padding: 0 22px 52px; gap: 8px; }.traits li { gap: 8px; padding: 5px 14px 5px 5px; font-size: 16px; }.traits li > span:first-child { width: 30px; height: 30px; }.traits li svg { width: 16px; height: 16px; } }
 .duo { max-width: 780px; font-size: clamp(30px, 3.5vw, 42px); font-weight: 550; letter-spacing: -.03em; line-height: 1.16; }
-.duo span { color: var(--muted); }
+/* A section heading: the first sentence, up to its full stop, in the main text colour, the rest muted. */
+.duo > span:not([data-lang]) { color: var(--muted); }
 /* A small rise when a new page opens */
 .page-enter { animation: page-in .5s cubic-bezier(.2,.7,.2,1) both; }
 @keyframes page-in { from { opacity: 0; transform: translateY(10px); } }
@@ -323,11 +321,11 @@ body::before { content: ""; position: fixed; top: 0; bottom: 0; left: 50%; width
 
 /* Hero horizon */
 .hero-arc, .hero-rays { position: absolute; left: 0; bottom: 0; display: block; width: 100%; height: var(--arc-h); pointer-events: none; }
-.hero-rays { max-width: none; opacity: .6; animation: arc-in 1.8s 2.2s both; }
+.hero-rays { max-width: none; opacity: .6; animation: arc-in calc(1.8s * var(--k, 1)) calc(.85s * var(--k, 1)) both; }
 :root:not(.dark) .hero-rays { opacity: .8; }
 /* Dots fill the space under the arc. An HTML layer keeps them round at every width. */
-.hero-dome { position: absolute; left: 0; bottom: 0; width: 100%; height: var(--arc-h); clip-path: url(#arc-dome); background: radial-gradient(circle, var(--dot) 1px, transparent 1.4px) 50% 100% / 12px 12px; animation: arc-in 1.6s 2.6s both; }
-.arc-line { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; animation: arc-wipe 1.9s cubic-bezier(.6,0,.2,1) 1.5s both; }
+.hero-dome { position: absolute; left: 0; bottom: 0; width: 100%; height: var(--arc-h); clip-path: url(#arc-dome); background: radial-gradient(circle, var(--dot) 1px, transparent 1.4px) 50% 100% / 12px 12px; animation: arc-in calc(1.6s * var(--k, 1)) calc(1.25s * var(--k, 1)) both; }
+.arc-line { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; animation: arc-wipe calc(1.9s * var(--k, 1)) cubic-bezier(.6,0,.2,1) calc(.15s * var(--k, 1)) both; }
 @keyframes arc-wipe { from { clip-path: inset(-10% 100% -10% -10%); } to { clip-path: inset(-10%); } }
 
 /* Lined grids. Every cell draws its left and top line; the outer ones are clipped away. */
@@ -595,3 +593,54 @@ body::before { content: ""; position: fixed; top: 0; bottom: 0; left: 50%; width
 @keyframes book-press { 0%, 50%, 53.5%, 100% { transform: none; } 51% { transform: scale(.97); } }
 @keyframes book-go { 0%, 51%, 97%, 100% { opacity: 1; } 53%, 94% { opacity: 0; } }
 @keyframes book-done { 0%, 51%, 97%, 100% { opacity: 0; } 53.5%, 93% { opacity: 1; } }
+
+/* Header: all pages in the bar on desktop, the menu button only where the links do not fit */
+.nav-links { gap: 28px; }
+@media (min-width: 981px) { .menu-toggle { display: none; } }
+@media (max-width: 980px) { .nav-links { display: none; } }
+/* Language picker */
+.language-picker { position: relative; }
+.language-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 0 10px; color: var(--ink); font-size: 16px; font-weight: 500; }
+.language-toggle svg:last-child { color: var(--muted); transition: transform .2s; }
+.language-toggle[aria-expanded="true"] svg:last-child { transform: rotate(180deg); }
+.language-menu { position: absolute; top: calc(100% + 8px); right: 0; z-index: 50; min-width: 190px; margin: 0; padding: 6px; list-style: none; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 18px 40px -18px rgb(0 0 0 / .45); animation: picker-in .18s ease both; }
+.language-menu button { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; min-height: 44px; padding: 0 12px; border: 0; border-radius: 8px; background: transparent; color: var(--ink); font-size: 17px; text-align: left; }
+.language-menu button:hover { background: var(--soft); }
+.language-menu svg { color: var(--accent); }
+@keyframes picker-in { from { opacity: 0; transform: translateY(-4px); } }
+
+/* Speed of the hero animation: every delay and duration above is multiplied by --k. */
+:root { --k: .62; }
+/* On desktop the hero is sized to the window height, so the first projects show at the bottom of the screen. */
+@media (min-width: 701px) {
+  .hero-shell { --arc-h: clamp(250px, min(38vw, 42svh), 560px); padding-bottom: calc(var(--arc-h) * .4 + 24px); }
+  .hero-content { padding-top: clamp(32px, 6svh, 72px); }
+}
+.hero-shell { display: flex; flex-direction: column; justify-content: center; }
+/* Introduction on the first visit (see introScript in app/layout.tsx).
+   While html has .intro the hero fills the screen and only the name and the horizon draw, with the header held back.
+   .intro-done then shrinks the hero to its normal height (the script animates min-height), so it moves up and the
+   projects appear below it, and brings in the header and the rest of the hero. --k stays set, so nothing replays. */
+html.intro, html.intro-done { --k: .8; }
+html.intro { overflow: hidden; }
+html.intro .hero-shell { min-height: calc(100svh - 73px); }
+@media (max-width: 700px) { html.intro .hero-shell { min-height: calc(100svh - 65px); } }
+html.intro-done .hero-shell { transition: min-height .85s cubic-bezier(.6,0,.2,1); }
+html.intro .site-header { opacity: 0; transform: translateY(-100%); pointer-events: none; }
+html.intro .portrait-round, html.intro .hero-role, html.intro .hero-intro, html.intro .hero-actions { animation: none; opacity: 0; }
+/* The name starts larger, then settles into its place. */
+@media (min-width: 701px) { html.intro .name-mark { transform: scale(1.3); } }
+html.intro-done .name-mark { transition: transform .85s cubic-bezier(.6,0,.2,1); }
+/* The page rails would show where the header is still hidden. */
+html.intro body::before { display: none; }
+html.intro-done .site-header { animation: header-in .7s cubic-bezier(.2,.7,.2,1) both; }
+html.intro-done .portrait-round { animation: portrait-in .8s .2s ease both; }
+html.intro-done .hero-role { animation: intro-in .7s .3s both; }
+html.intro-done .hero-intro { animation: intro-in .7s .4s both; }
+html.intro-done .hero-actions { animation: intro-in .7s .5s both; }
+@keyframes header-in { from { opacity: 0; transform: translateY(-100%); } }
+
+/* Texts rendered in both languages (the T component): show the one that matches <html lang>. */
+html[lang="nl"] [data-lang="en"], html:not([lang="nl"]) [data-lang="nl"] { display: none; }
+/* The home page has its own entrance in the hero, so it skips the general page rise. */
+.page-enter:has(.hero-shell) { animation: none; }

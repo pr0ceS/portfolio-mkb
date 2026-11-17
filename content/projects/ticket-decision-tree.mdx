@@ -10,12 +10,22 @@ category: "automation"
 
 ## The problem
 
-Staff on location had to interpret a category chart themselves to create tickets. The result: wrong categories and missing details.
+Staff on location create tickets for everything that needs attention in a building. To pick the right category they had to read a category chart and interpret it themselves. The result: wrong categories and missing details.
 
 ## The approach
 
-I built a decision tree in Zoho Desk that asks questions and creates the complete ticket through the API. The structure is based on an analysis of 2,251 real tickets. The platform cannot split text or calculate, so I worked around that with API patterns.
+### Questions instead of a chart
 
-## The result
+A decision tree in Zoho Desk, built with Guided Conversations, asks the questions. Each answer decides the next question. At the end the tree creates the complete ticket through the API, with the right category and all the details that category needs.
 
-The Administration category is fully built and tested, including automatic calculations. The next category is designed.
+### Based on real tickets
+
+The structure follows from an analysis of 2,251 real tickets. The categories and questions therefore follow what staff actually report, instead of what a chart assumes.
+
+### Calculations inside the conversation
+
+Some tickets need a calculated value, and some answers have to be split into separate fields. Guided Conversations can do neither. Both are handled with API calls from inside the tree, so the staff member does not notice the limitation and the ticket arrives with the calculation already done.
+
+### Access through OAuth
+
+The tree talks to the Zoho Desk API through OAuth, so it only has the rights it needs to create tickets.

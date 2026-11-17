@@ -5,27 +5,40 @@ date: "2026-04-01"
 published: true
 tags: ["Python", "REST API", "OData", "Exact Online", "Reeleezee", "Cashr", "Excel"]
 locale: "nl"
-category: "integration"
+category: "automation"
 status: "Datastroom in kaart, testplan klaar"
-role: "Analyse en scripts"
 ---
 
 ## Het probleem
 
-Een bestaande koppeling stuurde de verkopen van het kassasysteem Cashr via Reeleezee naar de boekhouding in Exact Online. Een externe partij had hem gebouwd. Er was geen documentatie en geen broncode.
+Een bestaande koppeling stuurde verkopen van het kassasysteem Cashr, via Reeleezee, naar de boekhouding in Exact Online. Een externe partij had haar gebouwd. Er was geen documentatie en geen broncode.
 
-Er waren drie problemen. Pinbetalingen kwamen binnen als één groepstotaal in plaats van per artikel. Bonnen "op rekening" werden nooit als verwerkt gemarkeerd, waardoor het openstaande saldo bleef groeien. En in een omzetrapport per product ontbraken items.
+Er waren drie problemen:
+
+- Pinbetalingen kwamen binnen als één groepstotaal in plaats van per artikel.
+- Bonnen "op rekening" werden nooit als verwerkt gemarkeerd, waardoor het openstaande saldo bleef groeien.
+- In een omzetrapport per product ontbraken artikelen.
 
 ## De aanpak
 
-Ik heb de koppeling van buitenaf ontleed. Daarvoor gebruikte ik de appmachtigingen, de REST API van Reeleezee met ongeveer 2.100 endpoints, en eigen Python-scripts.
+Zonder broncode was de enige ingang van buitenaf: kijken wat de koppeling mag doen, en wat ze in elk systeem achterlaat.
 
-Zo vond ik de regel die artikelcodes in het ene systeem koppelt aan artikelcodes in het andere. Ik vond ook de API-acties waarmee je een bon als verwerkt markeert. Daarna schreef ik een diff-script dat de productcatalogus van beide systemen regel voor regel vergelijkt.
+### De datastroom lezen
+
+De appmachtigingen lieten zien bij welke gegevens de koppeling kan. De REST API van Reeleezee, met ongeveer 2.100 endpoints, liet zien wat daar werkelijk aankomt. Python-scripts lazen de gegevens aan beide kanten uit, zodat die naast elkaar gelegd konden worden.
+
+### De mappingregel
+
+Uit die vergelijking kwam de regel naar voren die een artikelcode in het kassasysteem koppelt aan een artikelcode in de boekhouding. Ook de API-acties die een bon als verwerkt markeren werden zo gevonden. Dat is de stap die de bonnen "op rekening" nooit bereikten.
+
+### Een diff-script voor de catalogus
+
+Een diff-script vergelijkt de productcatalogus van beide systemen regel voor regel en meldt elk product dat aan de andere kant naar een ander artikel wijst.
 
 ## Het resultaat
 
 De volledige datastroom is nu in kaart gebracht, van de kassa tot de boekhouding.
 
-Het diff-script vond foute artikelkoppelingen met verkeerde btw-tarieven. Dat waren producten die op het verkeerde artikel terechtkwamen, en daardoor op het verkeerde tarief.
+Het diff-script vond foute artikelkoppelingen met verkeerde btw-tarieven. Dat waren producten die op het verkeerde artikel terechtkwamen, en dus tegen het verkeerde tarief.
 
-Er ligt een plan voor een golden-master-test: de koppeling draaien tegen echte facturen en de uitkomst vergelijken met een resultaat waarvan vaststaat dat het klopt.
+De volgende stap is gepland als een golden-master-test: de koppeling laten draaien tegen echte facturen en de uitkomst vergelijken met een resultaat waarvan vaststaat dat het klopt.

@@ -8,25 +8,30 @@ tags: ["Medusa v2", "Astro", "Cloudflare Workers", "Sanity", "Mollie API", "Post
 locale: "nl"
 category: "web"
 status: "Live"
-role: "Bouw van de webshop, de backend-opzet en de betaalintegratie"
 ---
 
 ## Het probleem
 
-Met Shopify ben je snel begonnen, maar je betaalt er elke maand voor, en nog eens voor elke app. Je kunt ook niet alles aanpassen. Vooral de checkout is lastig te veranderen.
+Met Shopify begin je snel, maar je betaalt er elke maand voor, en per app nog een keer. Je kunt ook niet alles aanpassen. Vooral de checkout is lastig te veranderen.
 
 Het doel was hier een webshop op een eigen stack: sneller, goedkoper en volledig aanpasbaar, inclusief de checkout.
 
 ## De aanpak
 
-De webshop is headless. Dat betekent dat het deel dat de klant ziet en het deel dat producten en bestellingen afhandelt aparte systemen zijn, die via een API met elkaar praten.
+De webshop is headless. Dat betekent dat het deel dat de klant ziet en het deel dat producten en bestellingen afhandelt aparte systemen zijn, die via een API met elkaar praten. Elk deel kan worden aangepast of vervangen zonder het andere te raken.
 
-De backend is Medusa v2, een open source e-commerce-engine. Die draait op een Hetzner-server van ongeveer $7 per maand. De frontend is gebouwd met Astro 5 en wordt op de server opgebouwd. Hij draait op Cloudflare Workers, zodat pagina's worden geleverd vanaf een locatie dicht bij de bezoeker.
+### Backend
 
-De content wordt beheerd in Sanity, een CMS. De zoekfunctie draait op Orama.
+De backend is Medusa v2, een open source e-commerce-engine. Die houdt de producten, prijzen, winkelwagens en bestellingen bij, met PostgreSQL als database en Redis ernaast. Het draait op een Hetzner-server van ongeveer $7 per maand.
 
-Betalingen lopen via Mollie, met onder andere Apple Pay en iDEAL. Er bestond geen Mollie-integratie voor Medusa die klaar was voor productie, dus die heb ik zelf gebouwd.
+### Storefront
+
+De storefront is gebouwd met Astro 5 en wordt op de server gerenderd. Die draait op Cloudflare Workers, waardoor pagina's worden geserveerd vanaf een locatie dicht bij de bezoeker. De content wordt beheerd in Sanity, een CMS, zodat teksten en beelden kunnen veranderen zonder developer. De zoekfunctie draait op Orama.
+
+### Betalingen
+
+Betalingen lopen via Mollie, met onder andere Apple Pay en iDEAL. Er bestond geen Mollie-integratie voor Medusa die klaar was voor productie, dus de webshop heeft een eigen integratie.
 
 ## Het resultaat
 
-De webshop is live en laadt zeer snel. Er is volledige controle over de checkout en de tracking. De hostingkosten zijn een fractie van wat Shopify plus apps zou kosten.
+De webshop staat live op freddys-store.com en laadt zeer snel. Er is volledige controle over de checkout en de tracking. De hostingkosten zijn een fractie van wat Shopify plus apps zou kosten.

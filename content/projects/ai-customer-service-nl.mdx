@@ -6,6 +6,7 @@ repository: "pr0ceS/mkai-backend/tree/main-new/mkaicrm-agent-v2"
 published: true
 tags: ["Python", "LangGraph", "RAG", "ChatGPT"]
 locale: "nl"
+category: "ai"
 ---
 
 ## De Uitdaging
@@ -16,7 +17,7 @@ Bij grote e-commerce bedrijven is klantenservice vaak de bottleneck voor groei. 
 
 ## De Oplossing: Een Hybride Architectuur
 
-Ik heb een event-driven backend ontworpen met **Python** en **FastAPI**. In tegenstelling tot standaard wrappers rondom OpenAI, gebruikt dit systeem **LangGraph** om de status te behouden. Het onthoudt de gespreksgeschiedenis, onderhandelingsfasen en context, waardoor het kan "nadenken" voordat het handelt.
+De backend is event-driven en gebouwd met **Python** en **FastAPI**. In tegenstelling tot standaard wrappers rondom OpenAI, gebruikt dit systeem **LangGraph** om de status te behouden. Het onthoudt de gespreksgeschiedenis, onderhandelingsfasen en context, waardoor het kan "nadenken" voordat het handelt.
 
 Het maakt gebruik van een **Hybride Beslissingsmotor**: Een LLM voor begrip en toon, maar hard-coded Python-logica voor kritieke zakelijke beslissingen (financiële drempels, retourtermijnen).
 
@@ -77,11 +78,11 @@ graph TB
 ## Belangrijkste Technische Functies
 
 ### 1. Geheugen met Status (LangGraph)
-Standaard AI-implementaties zijn staatloos—ze vergeten de vorige e-mail direct. Ik heb **LangGraph** geïmplementeerd om een toestandsmachine te creëren. De agent weet precies waar hij zich in een onderhandeling bevindt.
+Standaard AI-implementaties zijn staatloos—ze vergeten de vorige e-mail direct. **LangGraph** maakt van het gesprek een toestandsmachine. De agent weet precies waar hij zich in een onderhandeling bevindt.
 *   *Scenario:* Als de agent een terugbetaling van 20% aanbiedt en de klant weigert, onthoudt de agent de afwijzing en controleert zijn interne status om te zien of hij bevoegd is om te escaleren naar 30%.
 
 ### 2. Retrieval-Augmented Generation (RAG)
-Om hallucinaties te voorkomen, vertrouwt de agent niet op de trainingsdata van de LLM voor bedrijfsbeleid. Ik heb **Qdrant** (Vector Database) geïmplementeerd om specifieke kennis tijdens runtime in te voegen.
+Om hallucinaties te voorkomen, vertrouwt de agent niet op de trainingsdata van de LLM voor bedrijfsbeleid. **Qdrant** (Vector Database) voegt specifieke kennis toe tijdens runtime.
 *   Voordat hij antwoordt, vraagt de agent aan de database: *"Wat is het beleid voor het retourneren van beschadigde goederen in Duitsland?"*
 *   Dit garandeert dat antwoorden feitelijk juist en juridisch conform zijn.
 

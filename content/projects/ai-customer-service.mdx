@@ -6,6 +6,7 @@ repository: "pr0ceS/mkai-backend/tree/main-new/mkaicrm-agent-v2"
 published: true
 tags: ["Python", "LangGraph", "RAG", "ChatGPT"]
 locale: "en"
+category: "ai"
 ---
 
 ## The Challenge
@@ -16,7 +17,7 @@ In high-volume e-commerce, customer service is often the bottleneck for scale. T
 
 ## The Solution: A Hybrid Architecture
 
-I engineered an event-driven backend using **Python** and **FastAPI**. Unlike standard wrappers around OpenAI, this system utilizes **LangGraph** to maintain state. It remembers conversation history, negotiation stages, and context, allowing it to "think" before it acts.
+The backend is event-driven and built with **Python** and **FastAPI**. Unlike standard wrappers around OpenAI, this system utilizes **LangGraph** to maintain state. It remembers conversation history, negotiation stages, and context, allowing it to "think" before it acts.
 
 It employs a **Hybrid Decision Engine**: It uses an LLM for understanding and tone, but relies on hard-coded Python logic for critical business decisions (financial thresholds, return windows).
 
@@ -77,11 +78,11 @@ graph TB
 ## Key Technical Features
 
 ### 1. Stateful Memory (LangGraph)
-Standard AI implementations are stateless—they forget the previous email immediately. I implemented **LangGraph** to create a state machine. The agent knows exactly where it is in a negotiation.
+Standard AI implementations are stateless—they forget the previous email immediately. **LangGraph** turns the conversation into a state machine. The agent knows exactly where it is in a negotiation.
 *   *Scenario:* If the agent offers a 20% refund and the customer declines, the agent remembers the rejection and checks its internal state to see if it is authorized to escalate to 30%.
 
 ### 2. Retrieval-Augmented Generation (RAG)
-To prevent hallucinations, the agent does not rely on the LLM's training data for company policies. I implemented **Qdrant** (Vector Database) to inject specific knowledge at runtime.
+To prevent hallucinations, the agent does not rely on the LLM's training data for company policies. **Qdrant** (Vector Database) injects specific knowledge at runtime.
 *   Before answering, the agent queries the vector DB: *"What is the policy for returning damaged goods in Germany?"*
 *   This ensures answers are factually accurate and legally compliant.
 

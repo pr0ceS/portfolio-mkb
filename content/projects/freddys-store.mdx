@@ -8,7 +8,6 @@ tags: ["Medusa v2", "Astro", "Cloudflare Workers", "Sanity", "Mollie API", "Post
 locale: "en"
 category: "web"
 status: "Live"
-role: "Built the storefront, the backend setup and the payment integration"
 ---
 
 ## The problem
@@ -19,14 +18,20 @@ The goal here was a webshop on its own stack: faster, cheaper and fully adjustab
 
 ## The approach
 
-The shop is headless. That means the part the customer sees and the part that handles products and orders are separate systems that talk through an API.
+The shop is headless. That means the part the customer sees and the part that handles products and orders are separate systems that talk through an API. Each part can be changed or replaced without touching the other.
 
-The backend is Medusa v2, an open source e-commerce engine. It runs on a Hetzner server that costs about $7 per month. The frontend is built with Astro 5 and rendered on the server. It runs on Cloudflare Workers, so pages are served from a location close to the visitor.
+### Backend
 
-Content is managed in Sanity, a CMS. Search runs on Orama.
+The backend is Medusa v2, an open source e-commerce engine. It keeps the products, prices, carts and orders, with PostgreSQL as the database and Redis next to it. It runs on a Hetzner server that costs about $7 per month.
 
-Payments go through Mollie, with Apple Pay and iDEAL among the methods. There was no Mollie integration for Medusa that was ready for production, so I built one myself.
+### Storefront
+
+The storefront is built with Astro 5 and rendered on the server. It runs on Cloudflare Workers, so pages are served from a location close to the visitor. Content is managed in Sanity, a CMS, so texts and images can change without a developer. Search runs on Orama.
+
+### Payments
+
+Payments go through Mollie, with Apple Pay and iDEAL among the methods. No Mollie integration for Medusa was ready for production, so the shop has its own.
 
 ## The result
 
-The webshop is live and loads very fast. There is full control over the checkout and the tracking. The hosting costs are a fraction of what Shopify plus apps would cost.
+The webshop is live at freddys-store.com and loads very fast. There is full control over the checkout and the tracking. The hosting costs are a fraction of what Shopify plus apps would cost.

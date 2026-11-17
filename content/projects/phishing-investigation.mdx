@@ -1,6 +1,6 @@
 ---
-title: "Security investigation into phishing messages"
-description: "Tracing why guests received a phishing link shortly after booking a hotel room online."
+title: "Security investigation into a data leak"
+description: "Log analysis to find where customer data was leaking, and the measures to close it."
 date: "2026-02-15"
 published: true
 tags: ["Log analysis","WordPress security","Incident response"]
@@ -10,12 +10,22 @@ category: "ai"
 
 ## The problem
 
-Guests who booked a hotel room through the website received a WhatsApp or text message with a phishing link shortly after. Nobody knew why.
+Customer data from a website was ending up outside the systems it belonged in. That data passes through several systems, and it was unclear which of them was leaking.
 
 ## The approach
 
-I analysed the firewall and application logs. A vulnerable WordPress plugin (Gravity SMTP, CVE-2026-4020) was being probed on several sites, and there were attempts on a suspicious PHP file in the uploads folder. I set up a test plan with canary bookings to isolate the leak per system.
+### Reading the logs
 
-## The result
+The firewall and application logs were the starting point. They showed that a vulnerable WordPress plugin was actively being probed on several sites. They also showed attempts to reach a suspicious PHP file in the uploads folder, which is a common place for a backdoor.
 
-Concrete leads, a plan of action (update, rotate API keys, check for backdoors) and a method to prove where the leak is.
+### Isolating the leak with canary records
+
+Each system the data passes through could be the leak. The test plan uses canary records: test entries with contact details that are unique per system. If one of those details is misused, it shows which system the data came from.
+
+## The measures
+
+- Update the vulnerable plugin on every site.
+- Replace the API keys, so keys that may have leaked stop working.
+- Check the sites for backdoors.
+
+The canary records also serve as the check afterwards: as long as none of them is misused, the leak is closed.
